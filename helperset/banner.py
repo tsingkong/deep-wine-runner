@@ -4,9 +4,9 @@ import sys
 import time
 import subprocess
 import threading
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
+from PyQt6.QtGui import *
+from PyQt6.QtCore import *
+from PyQt6.QtWidgets import *
 
 def check_window():
     # 使用 wmctrl 命令列出所有窗口，并使用 grep 过滤出特定的 WMCLASS
@@ -116,4 +116,4 @@ SetWindowSize(window)
 layout.addWidget(QLabel(f"<p align='center'><img width='{window.geometry().width()}' src='{backgroundImgPath}'></p>"), 0, 0)
 threading.Thread(target=check_wmclass).start()
 MoveCenter(window)
-app.exec_()
+app.exec()

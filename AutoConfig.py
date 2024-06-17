@@ -18,11 +18,11 @@ import traceback
 import updatekiller
 import urllib.request
 import req as requests
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtWidgets as QtWidgets
 from UI.AutoConfig import *
 from Model import *
 try:
-    import PyQt5.QtWebEngineWidgets as QtWebEngineWidgets
+    import PyQt6.QtWebEngineWidgets as QtWebEngineWidgets
     webeng = True
 except:
     print("未安装此依赖库")
@@ -77,7 +77,7 @@ class ProgramRunStatusUpload():
         for i in [1, 1, 1, 1, 0]:
             ProgramRunStatusUpload.starList.append(QtWidgets.QLabel(f"<img src='{programPath}/Icon/{['Un', ''][i]}Star.svg' width=25>"))
             ProgramRunStatusUpload.starLayout.addWidget(ProgramRunStatusUpload.starList[-1])
-        ProgramRunStatusUpload.starLayout.addItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
+        ProgramRunStatusUpload.starLayout.addItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum))
         ProgramRunStatusUpload.programName.setPlaceholderText(QtCore.QCoreApplication.translate("U", "如果这个程序和程序名确实是合法还是检测到敏感词，改为“NULL”即可"))
         ProgramRunStatusUpload.fen.addItems(["0分", "1分", "2分", "3分", "4分", "5分"])
         ProgramRunStatusUpload.fen.setCurrentIndex(4)
@@ -208,7 +208,7 @@ class InformationWindow():
         message.setLayout(messageLayout)
         #message.setWindowModality(ApplicationModal);
         message.show()
-        message.exec_()
+        message.exec()
 
 def Add(lists: list):
     global pinLunLayout
@@ -556,7 +556,7 @@ if __name__ == "__main__":
     iconPath = "{}/deepin-wine-runner.svg".format(programPath)
     window.show()
     #ui.actionGitlink.setExclusive(True)
-    sourcesGroup = QtWidgets.QActionGroup(window)
+    sourcesGroup = QtGui.QActionGroup(window)
     
     sourcesGroup.addAction(ui.actionGitee)
     sourcesGroup.addAction(ui.actionGithub)
@@ -591,4 +591,4 @@ if __name__ == "__main__":
         traceback.print_exc()
         QtWidgets.QMessageBox.critical(window, "提示", "无法连接服务器")
     
-    app.exec_()
+    app.exec()

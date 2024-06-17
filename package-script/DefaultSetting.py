@@ -2,7 +2,7 @@
 # 读取设置单独用一个 py 文件
 import os
 import json
-import PyQt5.QtGui as QtGui
+import PyQt6.QtGui as QtGui
 
 # 获取用户主目录
 def get_home():

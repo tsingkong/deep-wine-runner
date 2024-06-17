@@ -11,9 +11,9 @@ import traceback
 import subprocess
 import webbrowser
 import configparser
-import PyQt5.QtGui as QtGui
-import PyQt5.QtCore as QtCore
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtGui as QtGui
+import PyQt6.QtCore as QtCore
+import PyQt6.QtWidgets as QtWidgets
 
 # 获取用户主目录
 def get_home():
@@ -156,9 +156,9 @@ def about_this_program()->"显示“关于这个程序”窗口":
         randomNumber = random.randint(0, len(iconPathList) - 1)
         iconShow.setText(f"<a href='https://www.gfdgdxi.top'><img width=256 src='{iconPathList[randomNumber]}'></a><p align='center'>{randomNumber + 1}/{len(iconPathList)}</p>")
     iconShow.linkActivated.connect(ChangeIcon)
-    messageLayout.addWidget(iconShow, 0, 0, 1, 1, QtCore.Qt.AlignTop)
+    messageLayout.addWidget(iconShow, 0, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignTop)
     aboutInfo = QtWidgets.QTextBrowser(messageWidget)
-    aboutInfo.setFocusPolicy(QtCore.Qt.NoFocus)
+    aboutInfo.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
     #aboutInfo.copyAvailable.connect(lambda: print("b"))
     aboutInfo.anchorClicked.connect(OpenUrl)
     aboutInfo.setOpenLinks(False)
@@ -167,7 +167,7 @@ def about_this_program()->"显示“关于这个程序”窗口":
     messageLayout.addWidget(aboutInfo, 0, 1, 1, 1)
     ok = QtWidgets.QPushButton(QtCore.QCoreApplication.translate("U", "确定"))
     ok.clicked.connect(QT.message.close)
-    messageLayout.addWidget(ok, 1, 1, 1, 1, QtCore.Qt.AlignBottom | QtCore.Qt.AlignRight)
+    messageLayout.addWidget(ok, 1, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignRight)
     messageWidget.setLayout(messageLayout)
     
     QT.message.setCentralWidget(messageWidget)
@@ -278,7 +278,7 @@ class SaveLogReport():
 
         # 权重
         size = QtWidgets.QSizePolicy()
-        size.setHorizontalPolicy(0)
+        size.setHorizontalPolicy(QtWidgets.QSizePolicy.Policy.Fixed)
         imageList = []
         messagebox = QtWidgets.QDialog()
         layout = QtWidgets.QGridLayout()
@@ -309,7 +309,7 @@ class SaveLogReport():
         controlLayout.addWidget(cancel)
         controlLayout.addWidget(ok)
         messagebox.setLayout(layout)
-        messagebox.exec_()
+        messagebox.exec()
 
     def To7z(self, savePath):
         os.system("rm -rfv /tmp/wine-runner-log")

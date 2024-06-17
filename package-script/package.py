@@ -16,9 +16,9 @@ import json
 import threading
 import webbrowser
 import subprocess
-import PyQt5.QtGui as QtGui
-import PyQt5.QtCore as QtCore
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtGui as QtGui
+import PyQt6.QtCore as QtCore
+import PyQt6.QtWidgets as QtWidgets
 from trans import *
 from DefaultSetting import *
 
@@ -194,7 +194,7 @@ widget = QtWidgets.QWidget()
 widgetLayout = QtWidgets.QGridLayout()
 
 size = QtWidgets.QSizePolicy()
-size.setHorizontalPolicy(0)
+size.setHorizontalPolicy(QtWidgets.QSizePolicy.Fixed)
 
 chineseName = QtWidgets.QLineEdit()
 englishName = QtWidgets.QLineEdit()
@@ -241,25 +241,25 @@ window.resize(int(window.frameGeometry().width() * 1.5), int(window.frameGeometr
 window.setWindowIcon(QtGui.QIcon(iconPath))
 menu = window.menuBar()
 programMenu = menu.addMenu(transla.transe("U", "程序"))
-exit = QtWidgets.QAction(transla.transe("U", "退出"))
+exit = QtGui.QAction(transla.transe("U", "退出"))
 exit.triggered.connect(window.close)
 uploadSparkStore = menu.addMenu(transla.transe("U", "投稿到星火应用商店"))
-uploadSparkStoreWebsize = QtWidgets.QAction(transla.transe("U", "从网页端投稿"))
+uploadSparkStoreWebsize = QtGui.QAction(transla.transe("U", "从网页端投稿"))
 if os.path.exists("/opt/spark-store-submitter/bin/spark-store-submitter"):
-    uploadSparkStoreProgram = QtWidgets.QAction(transla.transe("U", "使用投稿器投稿（推荐）"))
+    uploadSparkStoreProgram = QtGui.QAction(transla.transe("U", "使用投稿器投稿（推荐）"))
 else:
-    uploadSparkStoreProgram = QtWidgets.QAction(transla.transe("U", "使用投稿器投稿（推荐，请先安装投稿器）"))
+    uploadSparkStoreProgram = QtGui.QAction(transla.transe("U", "使用投稿器投稿（推荐，请先安装投稿器）"))
     uploadSparkStoreProgram.setDisabled(True)
 uploadSparkStore.addAction(uploadSparkStoreProgram)
 uploadSparkStore.addAction(uploadSparkStoreWebsize)
 uploadSparkStoreWebsize.triggered.connect(lambda: webbrowser.open_new_tab("https://upload.deepinos.org"))
 uploadSparkStoreProgram.triggered.connect(lambda: threading.Thread(target=os.system, args=["/opt/spark-store-submitter/bin/spark-store-submitter"]).start())
 videoHelp = menu.addMenu(transla.transe("U", "视频教程(&V)"))
-videoHelpAction = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(20), transla.transe("U", "视频教程"))
+videoHelpAction = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DriveNetIcon), transla.transe("U", "视频教程"))
 videoHelpAction.triggered.connect(lambda: webbrowser.open_new_tab("https://space.bilibili.com/695814694/channel/collectiondetail?sid=1610353"))
 videoHelp.addAction(videoHelpAction)
 helpMenu = menu.addMenu(transla.transe("U", "帮助"))
-help = QtWidgets.QAction(transla.transe("U", "帮助"))
+help = QtGui.QAction(transla.transe("U", "帮助"))
 help.triggered.connect(ShowHelp)
 helpMenu.addAction(help)
 programMenu.addAction(exit)
@@ -297,4 +297,4 @@ windowFrameInputValueList = [
 ]
 # 设置字体
 SetFont(app)
-sys.exit(app.exec_())
+sys.exit(app.exec())

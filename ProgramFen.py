@@ -5,9 +5,9 @@ import base64
 import traceback
 import updatekiller
 import req as requests
-import PyQt5.QtGui as QtGui
-import PyQt5.QtCore as QtCore
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtGui as QtGui
+import PyQt6.QtCore as QtCore
+import PyQt6.QtWidgets as QtWidgets
 
 class ProgramRunStatusShow():
     msgWindow = None
@@ -93,7 +93,7 @@ class ProgramRunStatusUpload():
         for i in [1, 1, 1, 1, 1]:
             ProgramRunStatusUpload.starList.append(QtWidgets.QLabel(f"<img src='{programPath}/Icon/{['Un', ''][i]}Star.svg' width=25>"))
             ProgramRunStatusUpload.starLayout.addWidget(ProgramRunStatusUpload.starList[-1])
-        ProgramRunStatusUpload.starLayout.addItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
+        ProgramRunStatusUpload.starLayout.addItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum))
         ProgramRunStatusUpload.fen.addItems(["0分", "1分", "2分", "3分", "4分", "5分"])
         ProgramRunStatusUpload.fen.setCurrentIndex(5)
         ProgramRunStatusUpload.fen.currentIndexChanged.connect(ProgramRunStatusUpload.ChangeStar)
@@ -119,4 +119,4 @@ if __name__ == "__main__":
     iconPath = "{}/deepin-wine-runner.svg".format(programPath)
     app = QtWidgets.QApplication(sys.argv)
     ProgramRunStatusShow.ShowWindow()
-    app.exec_()
+    app.exec()

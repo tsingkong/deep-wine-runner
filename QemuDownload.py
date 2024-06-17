@@ -4,7 +4,7 @@
 # 作者：gfdgd xi、为什么您不喜欢熊出没和阿布
 # 版本：2.4.0
 # 感谢：感谢 deepin-wine 团队，提供了 deepin-wine 给大家使用，让我能做这个程序
-# 基于 Python3 的 PyQt5 构建
+# 基于 Python3 的 PyQt6 构建
 #########################################################################
 #################
 # 引入所需的库
@@ -21,7 +21,7 @@ programPath = os.path.split(os.path.realpath(__file__))[0]  # 返回 string
 sys.path.append(f"{programPath}/../")
 from Model import *
 from trans import *
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 programPath = os.path.split(os.path.realpath(__file__))[0]  # 返回 string
 # UI 布局（自动生成）
 class Ui_MainWindow(object):
@@ -55,7 +55,7 @@ class Ui_MainWindow(object):
 4、在此环境使用 Wine 时，只能读取到您用户目录或本程序文件夹下的文件，其它路径无法读取；
 5、移除容器时请保证在这次打开电脑时没有调用过需要删除容器，如果有调用过建议重启电脑后再移除；
 6、暂时属于测试功能；""")))
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.addButton = QtWidgets.QPushButton(self.centralWidget)
         self.addButton.setObjectName("addButton")
@@ -63,7 +63,7 @@ class Ui_MainWindow(object):
         self.delButton = QtWidgets.QPushButton(self.centralWidget)
         self.delButton.setObjectName("delButton")
         self.verticalLayout.addWidget(self.delButton)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
         self.internetWineList = QtWidgets.QListView(self.centralWidget)
@@ -83,7 +83,7 @@ class Ui_MainWindow(object):
         #self.horizontalLayout.addWidget(self.deleteZip)
         #self.addOtherWine = QtWidgets.QPushButton(self.centralWidget)
         #self.horizontalLayout.addWidget(self.addOtherWine)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout.addItem(spacerItem2)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         MainWindow.setCentralWidget(self.centralWidget)
@@ -92,16 +92,16 @@ class Ui_MainWindow(object):
         
         self.menu = MainWindow.menuBar()
         self.changeSources = self.menu.addMenu(_translate("MainWindow", "更换源"))
-        self.gitlinkAction = QtWidgets.QAction(_translate("MainWindow", "Github 源（推荐）"))
-        self.ipv6Action = QtWidgets.QAction(_translate("MainWindow", "备用源（只支持 IPv6 用户）"))
-        self.localAction = QtWidgets.QAction(_translate("MainWindow", "本地测试源（127.0.0.1）"))
+        self.gitlinkAction = QtGui.QAction(_translate("MainWindow", "Github 源（推荐）"))
+        self.ipv6Action = QtGui.QAction(_translate("MainWindow", "备用源（只支持 IPv6 用户）"))
+        self.localAction = QtGui.QAction(_translate("MainWindow", "本地测试源（127.0.0.1）"))
         self.changeSources.addAction(self.gitlinkAction)
         self.changeSources.addAction(self.ipv6Action)
         self.changeSources.addAction(self.localAction)
         for i in [self.gitlinkAction, self.ipv6Action, self.localAction]:
             i.setCheckable(True)
         self.gitlinkAction.setChecked(True)
-        self.changeSourcesGroup = QtWidgets.QActionGroup(MainWindow)
+        self.changeSourcesGroup = QtGui.QActionGroup(MainWindow)
         self.changeSourcesGroup.addAction(self.gitlinkAction)
         self.changeSourcesGroup.addAction(self.ipv6Action)
         self.changeSourcesGroup.addAction(self.localAction)
@@ -355,7 +355,7 @@ def on_delButton_clicked():
     if os.path.exists("/tmp/deepin-wine-runner-qemu-lock"):
         QtWidgets.QMessageBox.question(window, "提示", "检测到您的电脑已经运行了 Qemu/Chroot 容器，请重启后再移除")
         return
-    if QtWidgets.QMessageBox.question(window, "提示", "你确定要删除吗？") == QtWidgets.QMessageBox.No:
+    if QtWidgets.QMessageBox.question(window, "提示", "你确定要删除吗？") == QtWidgets.QMessageBox.StandardButton.No:
         return
     if ui.localWineList.currentIndex().row() < 0:
         QtWidgets.QMessageBox.information(window, "提示", "您未选择任何项")
@@ -403,7 +403,7 @@ if __name__ == "__main__":
     internetWineSource = internetWineSourceList[0]
     app = QtWidgets.QApplication(sys.argv)
     if os.system("which qemu-i386-static"):
-        if QtWidgets.QMessageBox.question(None, "提示", "检测到您未安装 qemu-user-static，是否安装？") == QtWidgets.QMessageBox.Yes:
+        if QtWidgets.QMessageBox.question(None, "提示", "检测到您未安装 qemu-user-static，是否安装？") == QtWidgets.QMessageBox.StandardButton.Yes:
             OpenTerminal(f"pkexec bash '{programPath}/ShellList/InstallQemuUserStatic.sh'")
         exit()
     try:
@@ -431,12 +431,12 @@ if __name__ == "__main__":
     ui.changeSourcesGroup.triggered.connect(ChangeSources)
     ## 加载内容
     # 设置列表双击不会编辑
-    ui.localWineList.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-    ui.internetWineList.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+    ui.localWineList.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+    ui.internetWineList.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
     # 读取信息
     ReadLocalInformation()
     ReadInternetInformation()
     # 图标
     ui.centralWidget.setWindowIcon(QtGui.QIcon(f"{programPath}/../deepin-wine-runner.svg"))
 
-    app.exec_()
+    app.exec()

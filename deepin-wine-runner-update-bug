@@ -7,8 +7,8 @@ import req as requests
 import traceback
 import webbrowser
 import urllib.parse as parse
-import PyQt5.QtGui as QtGui
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtGui as QtGui
+import PyQt6.QtWidgets as QtWidgets
 from DefaultSetting import *
 
 # 读取文本文档
@@ -76,7 +76,7 @@ githubButton = QtWidgets.QPushButton("Github Issues")
 otherUpload.addWidget(QtWidgets.QLabel("如果无法正常反馈，可以用其他方式反馈："))
 otherUpload.addWidget(giteeButton)
 otherUpload.addWidget(githubButton)
-otherUpload.addSpacerItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
+otherUpload.addSpacerItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum))
 starMenu.addItems(["5分", "4分", "3分", "2分", "1分"])
 widgetLayout.addWidget(QtWidgets.QLabel("你的昵称："), 0, 0, 1, 1)
 widgetLayout.addWidget(QtWidgets.QLabel("联系方式（电子邮箱）："), 0, 2, 1, 1)
@@ -106,4 +106,4 @@ window.setWindowIcon(QtGui.QIcon(iconPath))
 window.show()
 # 设置字体
 SetFont(app)
-sys.exit(app.exec_())
+sys.exit(app.exec())

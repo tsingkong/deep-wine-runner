@@ -15,7 +15,7 @@ import sys
 import json
 import updatekiller
 import threading
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtWidgets as QtWidgets
 
 # 读取文本文档
 def readtxt(path):
@@ -57,7 +57,7 @@ if not os.path.exists(f"{homePath}/package-script") or not json.loads(readtxt(f"
     QtWidgets.QProgressDialog(None)
     t = threading.Thread(target=Unzip)
     t.start()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 os.chdir(f"{homePath}/package-script")
 os.system("./package.py")
 print("End")

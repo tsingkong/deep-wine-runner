@@ -3,7 +3,7 @@ import os
 import sys
 import getpass
 import updatekiller
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtWidgets as QtWidgets
 
 if __name__ == "__main__":
     programPath = os.path.split(os.path.realpath(__file__))[0]  # 返回 string

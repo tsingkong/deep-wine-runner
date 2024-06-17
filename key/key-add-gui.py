@@ -11,7 +11,7 @@ import json
 import dbus
 import threading
 from UI.KeyAddGui import *
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtWidgets as QtWidgets
 
 keyListDebianMap = [[], ["shift"], ["ctrl"], ["alt"], ["ctrl", "alt"], ["ctrl", "shift"], ["alt", "shift"]]
 keyList = ["无快捷键", "shift", "ctrl", "alt", "ctrl+alt", "ctrl+shift", "alt+shift"]
@@ -106,4 +106,4 @@ if __name__ == "__main__":
     window.show()
     threading.Thread(target=Check.CheckThreading).start()
     Clear()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

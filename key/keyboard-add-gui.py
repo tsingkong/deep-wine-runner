@@ -11,7 +11,7 @@ import json
 import threading
 import traceback
 from UI.KeyAddKeyboardGui import *
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtWidgets as QtWidgets
 
 keyList = ["无快捷键", "shift", "ctrl", "alt", "ctrl+alt", "ctrl+shift", "alt+shift"]
 keyListDeepinMap = ["", "<Shift>", "<Control>", "<Alt>", "<Control><Alt>", "<Control><Shift>", "<Alt><Shift>"]
@@ -125,4 +125,4 @@ if __name__ == "__main__":
     ui.localKey.textChanged.connect(Click.LocalKeyChange)
     window.show()
     #threading.Thread(target=Check.CheckThreading).start()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

@@ -3,8 +3,8 @@ import os
 import sys
 import updatekiller
 import threading
-import PyQt5.QtGui as QtGui
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtGui as QtGui
+import PyQt6.QtWidgets as QtWidgets
 
 def Create():  
     # 解压容器
@@ -45,9 +45,9 @@ if __name__ == "__main__":
         label.setText("正在下载容器，请稍后……")
         window.show()
         threading.Thread(target=Download).start()
-        app.exec_()
+        app.exec()
     window.setWindowTitle(f"解压容器 {sys.argv[1]}")
     label.setText(f"正在解压容器，请稍后……\n容器路径：{sys.argv[1]}")
     window.show()
     threading.Thread(target=Create).start()
-    app.exec_()
+    app.exec()

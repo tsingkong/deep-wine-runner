@@ -2,11 +2,11 @@
 
 # Form implementation generated from reading ui file 'KeyAddGui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt6 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.keyBoardList)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.addButton = QtWidgets.QPushButton(self.centralwidget)
         self.addButton.setObjectName("addButton")
@@ -43,18 +43,18 @@ class Ui_MainWindow(object):
         self.menu = QtWidgets.QMenu(self.menuBar)
         self.menu.setObjectName("menu")
         MainWindow.setMenuBar(self.menuBar)
-        self.action = QtWidgets.QAction(MainWindow)
+        self.action = QtGui.QAction(MainWindow)
         self.action.setObjectName("action")
-        self.serverTips = QtWidgets.QAction(MainWindow)
+        self.serverTips = QtGui.QAction(MainWindow)
         self.serverTips.setEnabled(False)
         self.serverTips.setObjectName("serverTips")
-        self.startServer = QtWidgets.QAction(MainWindow)
+        self.startServer = QtGui.QAction(MainWindow)
         self.startServer.setObjectName("startServer")
-        self.stopServer = QtWidgets.QAction(MainWindow)
+        self.stopServer = QtGui.QAction(MainWindow)
         self.stopServer.setObjectName("stopServer")
-        self.setAutoStart = QtWidgets.QAction(MainWindow)
+        self.setAutoStart = QtGui.QAction(MainWindow)
         self.setAutoStart.setObjectName("setAutoStart")
-        self.setUnautoStart = QtWidgets.QAction(MainWindow)
+        self.setUnautoStart = QtGui.QAction(MainWindow)
         self.setUnautoStart.setObjectName("setUnautoStart")
         self.menu.addAction(self.serverTips)
         self.menu.addSeparator()

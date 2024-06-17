@@ -4,7 +4,7 @@
 # 作者：gfdgd xi、为什么您不喜欢熊出没和阿布
 # 版本：2.4.0
 # 感谢：感谢 deepin-wine 团队，提供了 deepin-wine 给大家使用，让我能做这个程序
-# 基于 Python3 的 PyQt5 构建
+# 基于 Python3 的 PyQt6 构建
 #########################################################################
 #################
 # 引入所需的库
@@ -20,7 +20,7 @@ import requests
 programPath = os.path.split(os.path.realpath(__file__))[0]  # 返回 string
 sys.path.append(f"{programPath}/../")
 from Model import *
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 programPath = os.path.split(os.path.realpath(__file__))[0]  # 返回 string
 # UI 布局（自动生成）
 class Ui_MainWindow(object):
@@ -43,16 +43,16 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         self.menu = MainWindow.menuBar()
         self.changeSources = self.menu.addMenu(_translate("MainWindow", "更换源"))
-        self.gitlinkAction = QtWidgets.QAction(_translate("MainWindow", "Gitlink 源（推荐）"))
-        self.ipv6Action = QtWidgets.QAction(_translate("MainWindow", "备用源（只支持 IPv6 用户）"))
-        self.localAction = QtWidgets.QAction(_translate("MainWindow", "本地测试源（127.0.0.1）"))
+        self.gitlinkAction = QtGui.QAction(_translate("MainWindow", "Gitlink 源（推荐）"))
+        self.ipv6Action = QtGui.QAction(_translate("MainWindow", "备用源（只支持 IPv6 用户）"))
+        self.localAction = QtGui.QAction(_translate("MainWindow", "本地测试源（127.0.0.1）"))
         self.changeSources.addAction(self.gitlinkAction)
         self.changeSources.addAction(self.ipv6Action)
         self.changeSources.addAction(self.localAction)
         for i in [self.gitlinkAction, self.ipv6Action, self.localAction]:
             i.setCheckable(True)
         self.gitlinkAction.setChecked(True)
-        self.changeSourcesGroup = QtWidgets.QActionGroup(MainWindow)
+        self.changeSourcesGroup = QtGui.QActionGroup(MainWindow)
         self.changeSourcesGroup.addAction(self.gitlinkAction)
         self.changeSourcesGroup.addAction(self.ipv6Action)
         self.changeSourcesGroup.addAction(self.localAction)
@@ -244,11 +244,11 @@ if __name__ == "__main__":
     #ui.changeSourcesGroup.triggered.connect(ChangeSources)
     ## 加载内容
     # 设置列表双击不会编辑
-    #ui.localWineList.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-    ui.internetWineList.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+    #ui.localWineList.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+    ui.internetWineList.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
     # 读取信息
     ReadInternetInformation()
     # 图标
     ui.centralWidget.setWindowIcon(QtGui.QIcon(f"{programPath}/../deepin-wine-runner.svg"))
 
-    app.exec_()
+    app.exec()
