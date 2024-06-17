@@ -5,7 +5,7 @@
 # 版本：2.5.0
 # 更新时间：2022年11月20日
 # 感谢：感谢 wine、deepin-wine 以及星火团队，提供了 wine、deepin-wine、spark-wine-devel 给大家使用，让我能做这个程序
-# 基于 Python3 的 PyQt5 构建
+# 基于 Python3 的 PyQt6 构建
 #################################################################################################################
 #################
 # 引入所需的库
@@ -15,9 +15,9 @@ import sys
 import globalenv
 import traceback
 import updatekiller
-import PyQt5.QtGui as QtGui
-import PyQt5.QtCore as QtCore
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtGui as QtGui
+import PyQt6.QtCore as QtCore
+import PyQt6.QtWidgets as QtWidgets
 
 desktopList = []
 desktopUsrList = []
@@ -113,8 +113,8 @@ delButton = QtWidgets.QPushButton("删除指定图标")
 delButton.clicked.connect(DeleteButton)
 #desktopListView = QtWidgets.QListView()
 desktopListView = QtWidgets.QTableView()
-desktopListView.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-desktopListView.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)#(QAbstractItemView::SelectRows)
+desktopListView.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+desktopListView.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)#(QAbstractItemView::SelectRows)
 layout.addWidget(desktopListView, 0, 0, 1, 4)
 layout.addWidget(delButton, 1, 3, 1, 1)
 widget.setLayout(layout)
@@ -125,4 +125,4 @@ window.setWindowIcon(QtGui.QIcon(f"{programPath}/deepin-wine-runner.svg"))
 GetDesktopThread()
 if (__name__ == "__main__"):
     window.show()
-    app.exec_()
+    app.exec()

@@ -5,7 +5,7 @@ PROC_NET =    "/proc/net/dev"
 
 import enum
 import psutil
-from PyQt5.QtCore import *
+from PyQt6.QtCore import *
 
 class infoUtils:
     class RateUnit(enum.Enum):

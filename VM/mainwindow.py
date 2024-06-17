@@ -10,9 +10,9 @@ import program_resources
 import ui_mainwindow
 import globalenv
 from buildvbox import *
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
+from PyQt6.QtGui import *
+from PyQt6.QtCore import *
+from PyQt6.QtWidgets import *
 
 stopShowTime = False
 m_cpuAll = 0
@@ -39,7 +39,7 @@ def MainWindow():
     #QLoggingCategory.defaultCategory().setEnabled(QLoggingCategory.QtDebugMsg, True)
     # 判断是否安装 vbox（无需判断）
     '''if(os.system("which VBoxManage")):
-        if(QMessageBox.question(this, ("提示"), "检测到您似乎没有安装 VirtualBox，立即安装？") == QMessageBox.Yes):
+        if(QMessageBox.question(this, ("提示"), "检测到您似乎没有安装 VirtualBox，立即安装？") == QMessageBox.StandardButton.Yes):
             os.system("xdg-open https:#www.virtualbox.org/wiki/Linux_Downloads")
         }
     }'''
@@ -90,19 +90,19 @@ def on_install_clicked():
     global stopShowTime
     if (ui.vmChooser.currentIndex() == 0):
         if(os.system("which qemu-system-x86_64")):
-            if(QMessageBox.question(this, ("提示"), ("您似乎没有安装 Qemu，是否继续创建虚拟机？")) == QMessageBox.No):
+            if(QMessageBox.question(this, ("提示"), ("您似乎没有安装 Qemu，是否继续创建虚拟机？")) == QMessageBox.StandardButton.No):
                 return
     elif (ui.vmChooser.currentIndex() == 1):
         if(os.system("which vboxmanage")):
-            if(QMessageBox.question(this, ("提示"), ("您似乎没有安装 VBox，是否继续创建虚拟机？")) == QMessageBox.No):
+            if(QMessageBox.question(this, ("提示"), ("您似乎没有安装 VBox，是否继续创建虚拟机？")) == QMessageBox.StandardButton.No):
                 return
     elif (ui.vmChooser.currentIndex() == 8):
         if(os.system("which qemu-system-arm")):
-            if(QMessageBox.question(this, ("提示"), ("无法检测到 qemu-system-arm，是否继续创建虚拟机？")) == QMessageBox.No):
+            if(QMessageBox.question(this, ("提示"), ("无法检测到 qemu-system-arm，是否继续创建虚拟机？")) == QMessageBox.StandardButton.No):
                 return
     elif (ui.vmChooser.currentIndex() == 9):
        if(os.system("which qemu-system-aarch64")):
-           if(QMessageBox.question(this, ("提示"), ("无法检测到 qemu-system-aarch64，是否继续创建虚拟机？")) == QMessageBox.No):
+           if(QMessageBox.question(this, ("提示"), ("无法检测到 qemu-system-aarch64，是否继续创建虚拟机？")) == QMessageBox.StandardButton.No):
                return
     file = QFile(QDir.homePath() + "/.config/deepin-wine-runner/QEMU-EFI")
     archFile = QFile(QDir.homePath() + "/.config/deepin-wine-runner/QEMU-ARCH")
@@ -112,15 +112,15 @@ def on_install_clicked():
     archFile.close()
     if (ui.systemVersion.currentIndex() == 0):
         if(not QFile.exists(programPath + "/Windows7X86Auto.iso")):
-            if(QMessageBox.question(this, ("提示"), ("似乎无法找到 Windows7X86Auto.iso，是否继续创建虚拟机？\n缺少该文件可能会导致虚拟机无法正常启动，尝试重新安装 Wine 运行器再试试？")) == QMessageBox.No):
+            if(QMessageBox.question(this, ("提示"), ("似乎无法找到 Windows7X86Auto.iso，是否继续创建虚拟机？\n缺少该文件可能会导致虚拟机无法正常启动，尝试重新安装 Wine 运行器再试试？")) == QMessageBox.StandardButton.No):
                 return
     elif (ui.systemVersion.currentIndex() == 1):
         if(not QFile.exists(programPath + "/Windows7X64Auto.iso")):
-            if(QMessageBox.question(this, ("提示"), ("似乎无法找到 Windows7X64Auto.iso，是否继续创建虚拟机？\n缺少该文件可能会导致虚拟机无法正常启动，尝试重新安装 Wine 运行器再试试？")) == QMessageBox.No):
+            if(QMessageBox.question(this, ("提示"), ("似乎无法找到 Windows7X64Auto.iso，是否继续创建虚拟机？\n缺少该文件可能会导致虚拟机无法正常启动，尝试重新安装 Wine 运行器再试试？")) == QMessageBox.StandardButton.No):
                 return
     elif (ui.systemVersion.currentIndex() == 3):
         if(not QFile.exists("/usr/share/qemu/OVMF.fd") and not QFile.exists(programPath + "/OVMF.fd") and ui.vmChooser.currentIndex() == 0):
-            if(QMessageBox.question(this, ("提示"), ("似乎无法找到 UEFI 固件，是否继续创建虚拟机？\nQemu 固件可以在“安装 Qemu”处安装")) == QMessageBox.No):
+            if(QMessageBox.question(this, ("提示"), ("似乎无法找到 UEFI 固件，是否继续创建虚拟机？\nQemu 固件可以在“安装 Qemu”处安装")) == QMessageBox.StandardButton.No):
                 return
             if(not dir.exists()):
                 dir.mkpath(QDir.homePath() + "/.config/deepin-wine-runner")
@@ -176,7 +176,7 @@ def on_qemuSetting_clicked():
 
 def on_addQemuDisk_triggered():
     if(QFile.exists(QDir.homePath() + "/Qemu/Windows/Windows.qcow2")):
-        if(QMessageBox.question(this, ("提示"), ("磁盘文件已存在，是否覆盖？\n覆盖后将无法恢复！")) == QMessageBox.No):
+        if(QMessageBox.question(this, ("提示"), ("磁盘文件已存在，是否覆盖？\n覆盖后将无法恢复！")) == QMessageBox.StandardButton.No):
             return
     path = QFileDialog.getOpenFileName(this, ("选择 Qemu 镜像"), QDir.homePath(), ("Qemu镜像(*.qcow2 *.img *.raw *.qcow *.qed *.vdi *.vhdx *.vmdk)所有文件(*.*)"))
     if(path == ""):
@@ -210,7 +210,7 @@ def on_delQemuDiskButton_clicked():
     if(not QFile.exists(QDir.homePath() + "/Qemu/Windows/Windows.qcow2")):
         QMessageBox.information(this, ("提示"), ("不存在磁盘文件，无法移除"))
         return
-    if(QMessageBox.question(this, ("提示"), ("是否删除？\n删除后将无法恢复！")) == QMessageBox.No):
+    if(QMessageBox.question(this, ("提示"), ("是否删除？\n删除后将无法恢复！")) == QMessageBox.StandardButton.No):
         return
     if(not QFile.remove(QDir.homePath() + "/Qemu/Windows/Windows.qcow2")):
         QMessageBox.critical(this, ("提示"), ("移除失败"))
@@ -330,4 +330,4 @@ if (subprocess.getoutput("arch") != "x86_64"):
         i.setVisible(False)
 window.show()
 if (__name__ == "__main__"):
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

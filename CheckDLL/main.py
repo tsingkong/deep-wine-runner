@@ -3,9 +3,9 @@ import sys
 import json
 import traceback
 import subprocess
-import PyQt5.QtGui as QtGui
-import PyQt5.QtCore as QtCore
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtGui as QtGui
+import PyQt6.QtCore as QtCore
+import PyQt6.QtWidgets as QtWidgets
 # 加入路径
 import os
 import sys
@@ -114,8 +114,8 @@ findButton.setDisabled(True)
 repairButton.setDisabled(True)
 findButton.clicked.connect(FindDll)
 repairButton.clicked.connect(RepairDll)
-badDllList.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-needDllList.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+badDllList.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+needDllList.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
 loadingTips = QtGui.QStandardItemModel(window)
 loadingTipsItem = QtGui.QStandardItem("正在读取……")
 loadingTips.appendRow(loadingTipsItem)
@@ -134,4 +134,4 @@ window.setWindowTitle(f"查看程序“{os.path.basename(sys.argv[1])}”缺少�
 window.resize(int(window.frameGeometry().width() * 1.2), int(window.frameGeometry().height() * 1.1))
 GetDll()
 window.show()
-app.exec_()
+app.exec()

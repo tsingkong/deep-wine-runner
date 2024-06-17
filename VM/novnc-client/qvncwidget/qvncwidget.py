@@ -8,13 +8,13 @@ licensed under GPLv3
 import logging
 import time
 
-from PyQt5.QtCore import (
+from PyQt6.QtCore import (
     QSize,
     Qt,
     pyqtSignal,
     QSemaphore
 )
-from PyQt5.QtGui import (
+from PyQt6.QtGui import (
     QImage,
     QPaintEvent,
     QPainter,
@@ -26,7 +26,7 @@ from PyQt5.QtGui import (
     QMouseEvent
 )
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget,
     QLabel,
     QWidget,

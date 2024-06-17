@@ -14,9 +14,9 @@ except:
     import xpinyin
 import traceback
 import subprocess
-import PyQt5.QtGui as QtGui
-import PyQt5.QtCore as QtCore
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtGui as QtGui
+import PyQt6.QtCore as QtCore
+import PyQt6.QtWidgets as QtWidgets
 from DefaultSetting import *
 
 import globalenv
@@ -40,7 +40,7 @@ def QuestionMessage(text: str):
     # 清零
     questionChoose = False
     questionStatus = False
-    if QtWidgets.QMessageBox.question(window, "提示", text) == QtWidgets.QMessageBox.Yes:
+    if QtWidgets.QMessageBox.question(window, "提示", text) == QtWidgets.QMessageBox.StandardButton.Yes:
         questionChoose = True
         print(questionChoose)
         questionStatus = True
@@ -782,4 +782,4 @@ if (__name__ == "__main__"):
     window.show()
     # 设置字体
     SetFont(app)
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

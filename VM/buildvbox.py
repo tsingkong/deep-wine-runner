@@ -9,7 +9,7 @@ import subprocess
 from vbox import *
 from qemu import *
 from infoUtils import *
-from PyQt5.QtNetwork import *
+from PyQt6.QtNetwork import *
 
 class buildvbox:
     def homePath(self):

@@ -6,9 +6,9 @@ import random
 import requests
 import threading
 import webbrowser
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
+from PyQt6.QtGui import *
+from PyQt6.QtCore import *
+from PyQt6.QtWidgets import *
 
 programPath = os.path.split(os.path.realpath(__file__))[0]  # 返回 string
 sys.path.append(f"{programPath}/../")
@@ -18,7 +18,7 @@ import globalenv
 # 尝试引入 QtWebEngine
 isWebengineInstalled = False
 try:
-    from PyQt5.QtWebEngineWidgets import *
+    from PyQt6.QtWebEngineWidgets import *
     isWebengineInstalled = True
 except:
     pass
@@ -104,4 +104,4 @@ window.show()
 if (__name__ == "__main__"):
     window.resize(int(window.frameGeometry().width() * 5),
                   int(window.frameGeometry().height() * 5))
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

@@ -1,5 +1,5 @@
 
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 ## Encoding Type for SetEncodings()
 # publicly documented

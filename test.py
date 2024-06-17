@@ -1,7 +1,7 @@
 import os
 import sys
 import globalenv
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtWidgets as QtWidgets
 app = QtWidgets.QApplication(sys.argv)
 window = QtWidgets.QMainWindow()
 # globalenv 的 init 是必须的，这样才能正确的 import Wine 运行器的窗口
@@ -16,4 +16,4 @@ globalenv.set_value("app", app)  # 用于将该部分的 app 给子模块的 Qt 
 import VM.mainwindow
 window.setCentralWidget(VM.mainwindow.window)
 window.show()
-app.exec_()
+app.exec()

@@ -1,6 +1,6 @@
 import sys
 import logging
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtWidgets import QApplication, QMainWindow
 from qvncwidget import QVNCWidget
 #logging.basicConfig(level=logging.DEBUG)  # DEBUG及以上的日志信息都会显示
 class Window(QMainWindow):
@@ -51,4 +51,4 @@ window = Window()
 window.resize(800, 600)
 window.show()
 
-sys.exit(app.exec_())
+sys.exit(app.exec())

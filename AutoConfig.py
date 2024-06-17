@@ -18,11 +18,11 @@ import traceback
 import updatekiller
 import urllib.request
 import req as requests
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtWidgets as QtWidgets
 from UI.AutoConfig import *
 from Model import *
 try:
-    import PyQt5.QtWebEngineWidgets as QtWebEngineWidgets
+    import PyQt6.QtWebEngineWidgets as QtWebEngineWidgets
     webeng = True
 except:
     print("未安装此依赖库")
@@ -167,7 +167,7 @@ if __name__ == "__main__":
     iconPath = "{}/deepin-wine-runner.svg".format(programPath)
     window.show()
     #ui.actionGitlink.setExclusive(True)
-    sourcesGroup = QtWidgets.QActionGroup(window)
+    sourcesGroup = QtGui.QActionGroup(window)
     
     sourcesGroup.addAction(ui.actionGitee)
     sourcesGroup.addAction(ui.actionGithub)
@@ -200,4 +200,4 @@ if __name__ == "__main__":
         traceback.print_exc()
         QtWidgets.QMessageBox.critical(window, "提示", "无法连接服务器")
     
-    app.exec_()
+    app.exec()

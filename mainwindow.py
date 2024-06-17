@@ -5,7 +5,7 @@
 # 版本：3.0.0
 # 更新时间：2022年12月10日
 # 感谢：感谢 wine、deepin-wine 以及星火团队，提供了 wine、deepin-wine、spark-wine-devel 给大家使用，让我能做这个程序
-# 基于 Python3 的 PyQt5 构建
+# 基于 Python3 的 PyQt6 构建
 #################################################################################################################
 #################
 # 引入所需的库
@@ -32,17 +32,18 @@ import subprocess
 import req as requests
 import urllib.parse as parse
 try:
-    import PyQt5.QtGui as QtGui
-except:
-    os.system("python3 -m pip install --upgrade pyqt5 --trusted-host https://repo.huaweicloud.com -i https://repo.huaweicloud.com/repository/pypi/simple")
-    os.system("python3 -m pip install --upgrade pyqt5 --trusted-host https://repo.huaweicloud.com -i https://repo.huaweicloud.com/repository/pypi/simple --break-system-packages")
-    import PyQt5.QtGui as QtGui
-import PyQt5.QtCore as QtCore
-import PyQt5.QtWidgets as QtWidgets
+    import PyQt6.QtGui as QtGui
+except Exception as e:
+    os.system("python3 -m pip install --upgrade PyQt6 --trusted-host https://repo.huaweicloud.com -i https://repo.huaweicloud.com/repository/pypi/simple")
+    os.system("python3 -m pip install --upgrade PyQt6 --trusted-host https://repo.huaweicloud.com -i https://repo.huaweicloud.com/repository/pypi/simple --break-system-packages")
+    import PyQt6.QtGui as QtGui
+import PyQt6.QtCore as QtCore
+import PyQt6.QtWidgets as QtWidgets
 try:
-    import PyQt5.QtWebEngineWidgets as QtWebEngineWidgets
+    import PyQt6.QtWebEngineWidgets as QtWebEngineWidgets
     bad = False
-except:
+except Exception as e:
+    print("import PyQt6.QtWebEngineWidgets error:", e)
     threading.Thread(target=os.system, args=["python3 -m pip install --upgrade PyQtWebEngine --trusted-host https://repo.huaweicloud.com -i https://repo.huaweicloud.com/repository/pypi/simple"]).start()
     threading.Thread(target=os.system, args=["python3 -m pip install --upgrade PyQtWebEngine --trusted-host https://repo.huaweicloud.com -i https://repo.huaweicloud.com/repository/pypi/simple --break-system-packages"]).start()
     bad = True
@@ -139,7 +140,7 @@ def runexebutton(self):
     global run
     DisableButton(True)
     if not CheckProgramIsInstall(wine[o1.currentText()]) and not o1.currentText() in untipsWine:
-        if QtWidgets.QMessageBox.question(widget, "提示", "检查到您未安装这个 wine，是否继续使用这个 wine 运行？") == QtWidgets.QMessageBox.No:
+        if QtWidgets.QMessageBox.question(widget, "提示", "检查到您未安装这个 wine，是否继续使用这个 wine 运行？") == QtWidgets.QMessageBox.StandardButton.No:
             DisableButton(False)
             return
     if e2.currentText() == "":  # 判断文本框是否有内容
@@ -185,7 +186,7 @@ class LogChecking():
         repairButton.clicked.connect(LogChecking.RepairButton)
         nmodel = QtGui.QStandardItemModel(window)
         item = QtGui.QStandardItem("正在分析中……")
-        questionList.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        questionList.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         nmodel.appendRow(item)
         questionList.setModel(nmodel)
         logWindowLayout.addWidget(questionList, 0, 0, 3, 1)
@@ -427,9 +428,9 @@ def about_this_program():
         randomNumber = random.randint(0, len(iconPathList) - 1)
         iconShow.setText(f"<a href='https://www.gfdgdxi.top'><img width=256 src='{iconPathList[randomNumber]}'></a><p align='center'>{randomNumber + 1}/{len(iconPathList)}</p>")
     iconShow.linkActivated.connect(ChangeIcon)
-    messageLayout.addWidget(iconShow, 0, 0, 1, 1, QtCore.Qt.AlignTop)
+    messageLayout.addWidget(iconShow, 0, 0, 1, 1, QtCore.Qt.AlignmentFlag.AlignTop)
     aboutInfo = QtWidgets.QTextBrowser(messageWidget)
-    aboutInfo.setFocusPolicy(QtCore.Qt.NoFocus)
+    aboutInfo.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
     #aboutInfo.copyAvailable.connect(lambda: print("b"))
     aboutInfo.anchorClicked.connect(OpenUrl)
     aboutInfo.setOpenLinks(False)
@@ -438,7 +439,7 @@ def about_this_program():
     messageLayout.addWidget(aboutInfo, 0, 1, 1, 1)
     ok = QtWidgets.QPushButton(QtCore.QCoreApplication.translate("U", "确定"))
     ok.clicked.connect(QT.message.close)
-    messageLayout.addWidget(ok, 1, 1, 1, 1, QtCore.Qt.AlignBottom | QtCore.Qt.AlignRight)
+    messageLayout.addWidget(ok, 1, 1, 1, 1, QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignRight)
     messageWidget.setLayout(messageLayout)
     
     QT.message.setCentralWidget(messageWidget)
@@ -461,12 +462,12 @@ def make_desktop_on_launcher():
             QtWidgets.QMessageBox.information(widget, "提示", "没有填写需要使用 exe 应用或保存的文件名")
             return
         if not CheckProgramIsInstall(wine[o1.currentText()]) and not o1.currentText() in untipsWine:
-            if QtWidgets.QMessageBox.question(widget, "提示", "检查到您未安装这个 wine，是否继续使用这个 wine 写入？") == QtWidgets.QMessageBox.No:
+            if QtWidgets.QMessageBox.question(widget, "提示", "检查到您未安装这个 wine，是否继续使用这个 wine 写入？") == QtWidgets.QMessageBox.StandardButton.No:
                 DisableButton(False)
                 return
         else:  # 如果都有
             if os.path.exists(get_home() + "/.local/share/applications/" + combobox1.currentText() + ".desktop"): # 判断目录是否有该文件，如果有
-                choose = QtWidgets.QMessageBox.question(widget, "提示", "文件已经存在，是否覆盖？") == QtWidgets.QMessageBox.Yes
+                choose = QtWidgets.QMessageBox.question(widget, "提示", "文件已经存在，是否覆盖？") == QtWidgets.QMessageBox.StandardButton.Yes
                 if choose:   # 如要覆盖
                     os.remove(get_home() + "/.local/share/applications/" + combobox1.currentText() + ".desktop")  # 删除该文件
                 else:  # 如不覆盖
@@ -538,12 +539,12 @@ def make_desktop_on_desktop():
             QtWidgets.QMessageBox.information(widget, "提示", "没有填写需要使用 exe 应用或保存的文件名")
             return
         if not CheckProgramIsInstall(wine[o1.currentText()]) and not o1.currentText() in untipsWine:
-            if QtWidgets.QMessageBox.question(widget, "提示", "检查到您未安装这个 wine，是否继续使用这个 wine 写入？") == QtWidgets.QMessageBox.No:
+            if QtWidgets.QMessageBox.question(widget, "提示", "检查到您未安装这个 wine，是否继续使用这个 wine 写入？") == QtWidgets.QMessageBox.StandardButton.No:
                 DisableButton(False)
                 return
         else:  # 如果都有
             if os.path.exists(get_desktop_path() + "/" + combobox1.currentText() + ".desktop"): # 判断目录是否有该文件，如果有
-                choose = QtWidgets.QMessageBox.question(widget, "提示", "文件已经存在，是否覆盖？") == QtWidgets.QMessageBox.Yes
+                choose = QtWidgets.QMessageBox.question(widget, "提示", "文件已经存在，是否覆盖？") == QtWidgets.QMessageBox.StandardButton.Yes
                 if choose:   # 如要覆盖
                     os.remove(get_desktop_path() + "/" + combobox1.currentText() + ".desktop")  # 删除该文件
                 else:  # 如不覆盖
@@ -606,7 +607,7 @@ def ListToDictionary(list):
     return dictionary
 
 def CleanProgramHistory():
-    if QtWidgets.QMessageBox.question(widget, "警告", "删除后将无法恢复，你确定吗？\n删除后软件将会自动重启。") == QtWidgets.QMessageBox.Yes:
+    if QtWidgets.QMessageBox.question(widget, "警告", "删除后将无法恢复，你确定吗？\n删除后软件将会自动重启。") == QtWidgets.QMessageBox.StandardButton.Yes:
         try:
             shutil.rmtree(get_home() + "/.config/deepin-wine-runner")
         except:
@@ -808,7 +809,7 @@ def RunWineProgram(wineProgram, history = False, Disbled = True):
     DisableButton(True)
     if not CheckProgramIsInstall(wine[o1.currentText()]) and o1.currentText() != "基于 linglong 的 deepin-wine6-stable（不推荐）" and o1.currentText() != "基于 UOS exagear 的 deepin-wine6-stable" and o1.currentText() != "基于 UOS box86 的 deepin-wine6-stable":
         if not CheckProgramIsInstall(wine[o1.currentText()]) and not o1.currentText() in untipsWine:
-            if QtWidgets.QMessageBox.question(widget, "提示", "检查到您未安装这个 wine，是否继续使用这个 wine 运行？") == QtWidgets.QMessageBox.No:
+            if QtWidgets.QMessageBox.question(widget, "提示", "检查到您未安装这个 wine，是否继续使用这个 wine 运行？") == QtWidgets.QMessageBox.StandardButton.No:
                 DisableButton(False)
                 return
     returnText.setText("")
@@ -1083,13 +1084,13 @@ def AddReg():
     path = QtWidgets.QFileDialog.getOpenFileName(window, "保存路径", get_home(), "reg文件(*.reg);;所有文件(*.*)")
     if path[0] == "" and not path[1]:
         return
-    RunWineProgram(f"regedit' /S '{path[0]}' 'HKEY_CURRENT_USER\Software\Wine\DllOverrides")
+    RunWineProgram(f"regedit' /S '{path[0]}' 'HKEY_CURRENT_USER\\Software\\Wine\\DllOverrides")
 
 def SaveDllList():
     path = QtWidgets.QFileDialog.getSaveFileName(window, "保存路径", get_home(), "reg文件(*.reg);;所有文件(*.*)")
     if path[0] == "" and not path[1]:
         return
-    RunWineProgram(f"regedit' /E '{path[0]}' 'HKEY_CURRENT_USER\Software\Wine\DllOverrides")
+    RunWineProgram(f"regedit' /E '{path[0]}' 'HKEY_CURRENT_USER\\Software\\Wine\\DllOverrides")
 
 def SetDeepinFileDialogDefult():
     code = os.system(f"pkexec \"{programPath}/deepin-wine-venturi-setter.py\" defult")
@@ -1115,7 +1116,7 @@ def DeleteDesktopIcon():
     QtWidgets.QMessageBox.information(widget, "提示", "删除完成")
 
 def DeleteWineBotton():
-    if QtWidgets.QMessageBox.question(widget, "提示", "你确定要删除容器吗？删除后将无法恢复！\n如果没有选择 wine 容器，将会自动删除默认的容器！") == QtWidgets.QMessageBox.No:
+    if QtWidgets.QMessageBox.question(widget, "提示", "你确定要删除容器吗？删除后将无法恢复！\n如果没有选择 wine 容器，将会自动删除默认的容器！") == QtWidgets.QMessageBox.StandardButton.No:
         return
     if e1.currentText() == "":
         wineBottonPath = setting["DefultBotton"]
@@ -1152,11 +1153,11 @@ def SetHttpProxy():
     port = QtWidgets.QInputDialog.getText(window, "提示", "请输入代理服务器端口")[0]
     if proxyServerAddress == "" or port == "":
         return
-    RunWineProgram("reg' add 'HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings' /v ProxyEnable /t REG_DWORD /d 00000001 '/f")
-    RunWineProgram(f"reg' add 'HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings' /v ProxyServer /d '{proxyServerAddress}:{port}' '/f")
+    RunWineProgram("reg' add 'HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings' /v ProxyEnable /t REG_DWORD /d 00000001 '/f")
+    RunWineProgram(f"reg' add 'HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings' /v ProxyServer /d '{proxyServerAddress}:{port}' '/f")
 
 def DisbledHttpProxy():
-    RunWineProgram("reg' add 'HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings' /v ProxyEnable /t REG_DWORD /d 00000000 '/f")
+    RunWineProgram("reg' add 'HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings' /v ProxyEnable /t REG_DWORD /d 00000000 '/f")
 
 def GetScreenSize():
     screenInformation = []
@@ -1621,7 +1622,7 @@ class GetDllFromWindowsISO:
     def CopyDll():
         choose = GetDllFromWindowsISO.dllList.selectionModel().selectedIndexes()[0].data()
         if os.path.exists(f"{GetDllFromWindowsISO.wineBottonPath}/drive_c/windows/system32/{choose}"):
-            if QtWidgets.QMessageBox.question(GetDllFromWindowsISO.message, "提示", f"DLL {choose} 已经存在，是否覆盖？") == QtWidgets.QMessageBox.No:
+            if QtWidgets.QMessageBox.question(GetDllFromWindowsISO.message, "提示", f"DLL {choose} 已经存在，是否覆盖？") == QtWidgets.QMessageBox.StandardButton.No:
                 return
         try:
             # 要分类讨论
@@ -1634,10 +1635,10 @@ class GetDllFromWindowsISO:
             # 选择原装或优于内建
             if QtWidgets.QInputDialog.getItem(GetDllFromWindowsISO.message, "选择", "选择模式", ["原装先于内建", "原装"], 0, False) == "原装先于内建":
                 # 原装先于内建
-                os.system(f"WINEPREFIX='{GetDllFromWindowsISO.wineBottonPath}' '{wine[o1.currentText()]}' reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v {os.path.splitext(choose)[0]} /d native,builtin /f")
+                os.system(f"WINEPREFIX='{GetDllFromWindowsISO.wineBottonPath}' '{wine[o1.currentText()]}' reg add 'HKEY_CURRENT_USER\\Software\\Wine\\DllOverrides' /v {os.path.splitext(choose)[0]} /d native,builtin /f")
             else:
                 # 原装
-                os.system(f"WINEPREFIX='{GetDllFromWindowsISO.wineBottonPath}' '{wine[o1.currentText()]}' reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v {os.path.splitext(choose)[0]} /d native /f")
+                os.system(f"WINEPREFIX='{GetDllFromWindowsISO.wineBottonPath}' '{wine[o1.currentText()]}' reg add 'HKEY_CURRENT_USER\\Software\\Wine\\DllOverrides' /v {os.path.splitext(choose)[0]} /d native /f")
             QtWidgets.QMessageBox.information(GetDllFromWindowsISO.message, "提示", "提取成功！")
         except:
             traceback.print_exc()
@@ -1875,7 +1876,7 @@ class ValueCheck():
             return
         try:
             value = self.link[types](self, file)
-            if QtWidgets.QInputDialog.getText(window, "值", "下面是计算得到的值，<b>是否要复制到剪切板？</b>", QtWidgets.QLineEdit.Normal, value)[1]:
+            if QtWidgets.QInputDialog.getText(window, "值", "下面是计算得到的值，<b>是否要复制到剪切板？</b>", QtWidgets.QLineEdit.EchoMode.Normal, value)[1]:
                 pyperclip.copy(value)
                 QtWidgets.QMessageBox.information(window, "提示", "复制成功！")
         except:
@@ -1887,13 +1888,13 @@ def ChangePath():
 
 def ConnectRemoteWindowsPC(ip: str):
     if os.system("which xfreerdp"):
-        if QtWidgets.QMessageBox.question(window, "提示", "未检测到 xfreerdp，是否立即安装？") == QtWidgets.QMessageBox.Yes:
+        if QtWidgets.QMessageBox.question(window, "提示", "未检测到 xfreerdp，是否立即安装？") == QtWidgets.QMessageBox.StandardButton.Yes:
             OpenTerminal("sudo apt install xfreerdp -y")
         return
     os.system(f"xfreerdp '{ip}'")
 
 def UploadLog():
-    if QtWidgets.QMessageBox.question(window, "提示", "您确定要上传吗？上传内容将不会公开，将用于加强日志分析功能") == QtWidgets.QMessageBox.Yes:
+    if QtWidgets.QMessageBox.question(window, "提示", "您确定要上传吗？上传内容将不会公开，将用于加强日志分析功能") == QtWidgets.QMessageBox.StandardButton.Yes:
         text = QtWidgets.QInputDialog.getMultiLineText(window, "输入内容", "输入描述信息")
         try:
             returnList = requests.post(base64.b64decode("aHR0cDovLzEyMC4yNS4xNTMuMTQ0OjMwMjUwL2xvZw==").decode("utf-8"), {
@@ -1992,8 +1993,8 @@ def AddDockerMenu():
     global openFileManager
     global openTerminal
     dockers = menu.addMenu("该 Docker 基础管理")
-    openFileManager = QtWidgets.QAction("打开默认文件管理器")
-    openTerminal = QtWidgets.QAction("打开默认终端")
+    openFileManager = QtGui.QAction("打开默认文件管理器")
+    openTerminal = QtGui.QAction("打开默认终端")
     openFileManager.triggered.connect(lambda: threading.Thread(target=os.system, args=[f"xdg-open '{get_home()}'"]).start())
     openTerminal.triggered.connect(lambda: threading.Thread(target=os.system, args=[f"x-terminal-emulator"]).start())
     dockers.addAction(openFileManager)
@@ -2640,10 +2641,10 @@ window.setCentralWidget(widget)
 mainLayout = QtWidgets.QGridLayout()
 # 权重
 size = QtWidgets.QSizePolicy()
-size.setHorizontalPolicy(0)
+size.setHorizontalPolicy(QtWidgets.QSizePolicy.Policy.Fixed)
 widgetSize = QtWidgets.QSizePolicy()
-#size.setHorizontalPolicy(0)
-widgetSize.setVerticalPolicy(0)
+#size.setHorizontalPolicy(QtWidgets.QSizePolicy.Policy.Fixed)
+widgetSize.setVerticalPolicy(QtWidgets.QSizePolicy.Policy.Fixed)
 #
 leftUp = QtWidgets.QWidget()
 mainLayout.addWidget(leftUp, 0, 0, 1, 1)
@@ -2722,7 +2723,7 @@ wineBottleReboot = QtWidgets.QPushButton(QtCore.QCoreApplication.translate("U", 
 wineBottleReboot.clicked.connect(lambda: RunWineProgram(f"wineboot' '-k"))
 programManager.addWidget(wineBottleReboot, 1, 8, 1, 1)
 programManager.addWidget(QtWidgets.QLabel(" "*5), 1, 9, 1, 1)
-programManager.addItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum), 1, 11, 1, 1)
+programManager.addItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum), 1, 11, 1, 1)
 programManager.addWidget(QtWidgets.QLabel(QtCore.QCoreApplication.translate("U", "WINE配置：")), 2, 0, 1, 1)
 wineConfig = QtWidgets.QPushButton(QtCore.QCoreApplication.translate("U", "配置容器"))
 wineConfig.clicked.connect(lambda: RunWineProgram("winecfg"))
@@ -2797,7 +2798,7 @@ mainLayout.addWidget(copy, 2, 0, 1, 1)
 programRun = QtWidgets.QWidget()
 programRunLayout = QtWidgets.QHBoxLayout()
 programRun.setLayout(programRunLayout)
-programRunLayout.addItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum))
+programRunLayout.addItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum))
 button3 = QtWidgets.QPushButton(QtCore.QCoreApplication.translate("U", "运行程序"))
 button3.clicked.connect(runexebutton)
 programRunLayout.addWidget(button3)
@@ -2812,24 +2813,24 @@ mainLayout.addWidget(programRun, 2, 1, 1, 1)
 # 菜单栏
 menu = window.menuBar()
 programmenu = menu.addMenu(QtCore.QCoreApplication.translate("U", "程序(&P)"))
-p1 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/wine.png"), QtCore.QCoreApplication.translate("U", "安装 wine(&I)"))
-#installWineOnDeepin23 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/wine23P.png"), QtCore.QCoreApplication.translate("U", "安装 wine(只限Deepin23 Preview)"))
-#installWineOnDeepin23Alpha = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/wine23A.png"), QtCore.QCoreApplication.translate("U", "安装 wine(只限Deepin23 Alpha)"))
-installWineHQOrg = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/wine.png"), QtCore.QCoreApplication.translate("U", "安装 WineHQ（官方源）"))
-installWineHQ = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/wine.png"), QtCore.QCoreApplication.translate("U", "安装 WineHQ（国内清华大学镜像源）"))
-installMoreWine = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/more-wine.png"), QtCore.QCoreApplication.translate("U", "安装更多 Wine（Wine 下载工具，推荐）"))
-downloadChrootBottle = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/CHROOT.png"), QtCore.QCoreApplication.translate("U", "下载 Chroot 容器"))
-installBox86CN = QtWidgets.QAction(QtGui.QIcon.fromTheme("box"), QtCore.QCoreApplication.translate("U", "安装 Box86/Box64 日构建（国内源）"))
-installBox86 = QtWidgets.QAction(QtGui.QIcon.fromTheme("box"), QtCore.QCoreApplication.translate("U", "安装 Box86/Box64 日构建（国外 Github 源）"))
-installLat = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "安装 lat（只限 Loongarch64 架构）"))
-p2 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "设置程序(&S)"))
-enabledAll = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "强制启用所有被禁用的组件（不推荐）"))
-setMiniFont = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "临时设置小字体"))
-setTinyFont = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "临时设置很小的字体"))
-setDefaultFont = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "临时设置默认字体"))
-p3 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/user-trash-full.svg"), QtCore.QCoreApplication.translate("U", "清空软件历史记录(&C)"))
-cleanCache = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/user-trash-full.svg"), QtCore.QCoreApplication.translate("U", "清空软件缓存"))
-p4 = QtWidgets.QAction(QtGui.QIcon.fromTheme("exit"), QtCore.QCoreApplication.translate("U", "退出程序(&E)"))
+p1 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/wine.png"), QtCore.QCoreApplication.translate("U", "安装 wine(&I)"))
+#installWineOnDeepin23 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/wine23P.png"), QtCore.QCoreApplication.translate("U", "安装 wine(只限Deepin23 Preview)"))
+#installWineOnDeepin23Alpha = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/wine23A.png"), QtCore.QCoreApplication.translate("U", "安装 wine(只限Deepin23 Alpha)"))
+installWineHQOrg = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/wine.png"), QtCore.QCoreApplication.translate("U", "安装 WineHQ（官方源）"))
+installWineHQ = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/wine.png"), QtCore.QCoreApplication.translate("U", "安装 WineHQ（国内清华大学镜像源）"))
+installMoreWine = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/more-wine.png"), QtCore.QCoreApplication.translate("U", "安装更多 Wine（Wine 下载工具，推荐）"))
+downloadChrootBottle = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/CHROOT.png"), QtCore.QCoreApplication.translate("U", "下载 Chroot 容器"))
+installBox86CN = QtGui.QAction(QtGui.QIcon.fromTheme("box"), QtCore.QCoreApplication.translate("U", "安装 Box86/Box64 日构建（国内源）"))
+installBox86 = QtGui.QAction(QtGui.QIcon.fromTheme("box"), QtCore.QCoreApplication.translate("U", "安装 Box86/Box64 日构建（国外 Github 源）"))
+installLat = QtGui.QAction(QtCore.QCoreApplication.translate("U", "安装 lat（只限 Loongarch64 架构）"))
+p2 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "设置程序(&S)"))
+enabledAll = QtGui.QAction(QtCore.QCoreApplication.translate("U", "强制启用所有被禁用的组件（不推荐）"))
+setMiniFont = QtGui.QAction(QtCore.QCoreApplication.translate("U", "临时设置小字体"))
+setTinyFont = QtGui.QAction(QtCore.QCoreApplication.translate("U", "临时设置很小的字体"))
+setDefaultFont = QtGui.QAction(QtCore.QCoreApplication.translate("U", "临时设置默认字体"))
+p3 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/user-trash-full.svg"), QtCore.QCoreApplication.translate("U", "清空软件历史记录(&C)"))
+cleanCache = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/user-trash-full.svg"), QtCore.QCoreApplication.translate("U", "清空软件缓存"))
+p4 = QtGui.QAction(QtGui.QIcon.fromTheme("exit"), QtCore.QCoreApplication.translate("U", "退出程序(&E)"))
 programmenu.addAction(p1)
 programmenu.addAction(installWineHQ)
 programmenu.addAction(installWineHQOrg)
@@ -2876,20 +2877,20 @@ cleanCache.triggered.connect(CleanProgramCache)
 p4.triggered.connect(window.close)
 
 wineOption = menu.addMenu(QtCore.QCoreApplication.translate("U", "Wine(&W)"))
-w1 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/file-manager.svg"), QtCore.QCoreApplication.translate("U", "打开 Wine 容器目录"))
-w2 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/font-installer.svg"), QtCore.QCoreApplication.translate("U", "安装常见字体"))
-w3 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/font-installer.svg"), QtCore.QCoreApplication.translate("U", "安装自定义字体"))
-w4 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/user-trash-full.svg"), QtCore.QCoreApplication.translate("U", "删除选择的 Wine 容器"))
-cleanBottonUOS = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/user-trash-full.svg"), QtCore.QCoreApplication.translate("U", "清理 Wine 容器（基于 Wine 适配活动脚本）"))
-wineKeyboardLnk = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "Wine 快捷键映射"))
-w5 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/deb.svg"), QtCore.QCoreApplication.translate("U", "打包 wine 应用（专业用户使用）"))
-w6 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/deb.svg"), QtCore.QCoreApplication.translate("U", "使用官方 Wine 适配活动的脚本进行打包"))
-easyPackager = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/deb.svg"), QtCore.QCoreApplication.translate("U", "使用简易打包器进行打包（小白且无特殊需求建议使用这个）"))
-getDllOnInternet = QtWidgets.QAction(QtGui.QIcon.fromTheme("1CD8_rundll32.0"), QtCore.QCoreApplication.translate("U", "从互联网获取DLL"))
-w7 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "从镜像获取DLL（只支持官方安装镜像，DOS内核如 Windows 95 暂不支持）"))
-updateGeek = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "从 Geek Uninstaller 官网升级程序"))
-deletePartIcon = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "快捷方式管理工具"))
-deleteDesktopIcon = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "删除所有 Wine 程序在启动器的快捷方式"))
+w1 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/file-manager.svg"), QtCore.QCoreApplication.translate("U", "打开 Wine 容器目录"))
+w2 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/font-installer.svg"), QtCore.QCoreApplication.translate("U", "安装常见字体"))
+w3 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/font-installer.svg"), QtCore.QCoreApplication.translate("U", "安装自定义字体"))
+w4 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/user-trash-full.svg"), QtCore.QCoreApplication.translate("U", "删除选择的 Wine 容器"))
+cleanBottonUOS = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/user-trash-full.svg"), QtCore.QCoreApplication.translate("U", "清理 Wine 容器（基于 Wine 适配活动脚本）"))
+wineKeyboardLnk = QtGui.QAction(QtCore.QCoreApplication.translate("U", "Wine 快捷键映射"))
+w5 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/deb.svg"), QtCore.QCoreApplication.translate("U", "打包 wine 应用（专业用户使用）"))
+w6 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/deb.svg"), QtCore.QCoreApplication.translate("U", "使用官方 Wine 适配活动的脚本进行打包"))
+easyPackager = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/deb.svg"), QtCore.QCoreApplication.translate("U", "使用简易打包器进行打包（小白且无特殊需求建议使用这个）"))
+getDllOnInternet = QtGui.QAction(QtGui.QIcon.fromTheme("1CD8_rundll32.0"), QtCore.QCoreApplication.translate("U", "从互联网获取DLL"))
+w7 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "从镜像获取DLL（只支持官方安装镜像，DOS内核如 Windows 95 暂不支持）"))
+updateGeek = QtGui.QAction(QtCore.QCoreApplication.translate("U", "从 Geek Uninstaller 官网升级程序"))
+deletePartIcon = QtGui.QAction(QtCore.QCoreApplication.translate("U", "快捷方式管理工具"))
+deleteDesktopIcon = QtGui.QAction(QtCore.QCoreApplication.translate("U", "删除所有 Wine 程序在启动器的快捷方式"))
 wineOption.addAction(w1)
 wineOption.addAction(w2)
 wineOption.addAction(w3)
@@ -2909,14 +2910,14 @@ wineOption.addSeparator()
 wineOption.addAction(updateGeek)
 wineOption.addSeparator()
 wm1 = wineOption.addMenu(QtCore.QCoreApplication.translate("U", "在指定 Wine、容器安装组件"))
-wm1_1 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 .net framework"))
-wm1_2 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 Visual Studio C++"))
-wm1_8 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 Visual FoxPro"))
-wm1_3 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 MSXML"))
-wm1_4 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 gecko"))
-wm1_5 = QtWidgets.QAction(QtGui.QIcon.fromTheme("mono"), QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 mono"))
-wm1_7 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 Visual Basic Runtime"))
-wm1_6 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装其它运行库"))
+wm1_1 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 .net framework"))
+wm1_2 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 Visual Studio C++"))
+wm1_8 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 Visual FoxPro"))
+wm1_3 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 MSXML"))
+wm1_4 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 gecko"))
+wm1_5 = QtGui.QAction(QtGui.QIcon.fromTheme("mono"), QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 mono"))
+wm1_7 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装 Visual Basic Runtime"))
+wm1_6 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "在指定wine、指定容器安装其它运行库"))
 wm1.addAction(wm1_1)
 wm1.addAction(wm1_2)
 wm1.addAction(wm1_8)
@@ -2926,12 +2927,12 @@ wm1.addAction(wm1_5)
 wm1.addAction(wm1_7)
 wm1.addAction(wm1_6)
 wm2 = wineOption.addMenu(QtCore.QCoreApplication.translate("U", "在指定 Wine、容器运行基础应用"))
-wm2_1 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的控制面板"))
-wm2_2 = QtWidgets.QAction(QtGui.QIcon.fromTheme("web-browser"), QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的浏览器"))
-wm2_3 = QtWidgets.QAction(QtGui.QIcon.fromTheme("regedit"), QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的注册表"))
-wm2_4 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/system-monitor.svg"), QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的任务管理器"))
-wm2_5 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/file-manager.svg"), QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的资源管理器"))
-wm2_6 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的关于 wine"))
+wm2_1 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的控制面板"))
+wm2_2 = QtGui.QAction(QtGui.QIcon.fromTheme("web-browser"), QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的浏览器"))
+wm2_3 = QtGui.QAction(QtGui.QIcon.fromTheme("regedit"), QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的注册表"))
+wm2_4 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/system-monitor.svg"), QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的任务管理器"))
+wm2_5 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/file-manager.svg"), QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的资源管理器"))
+wm2_6 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "打开指定wine、指定容器的关于 wine"))
 wm2.addAction(wm2_1)
 wm2.addAction(wm2_2)
 wm2.addAction(wm2_3)
@@ -2940,11 +2941,11 @@ wm2.addAction(wm2_5)
 wm2.addAction(wm2_6)
 wineOption.addSeparator()
 settingRunV3Sh = wineOption.addMenu(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "run_v3.sh 管理"))
-w8 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "设置 run_v3.sh 的文管为 Deepin 默认文管"))
-w9 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "设置 run_v3.sh 的文管为 Wine 默认文管"))
-w10 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "重新安装 deepin-wine-helper"))
-w11 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/winetricks.svg"), QtCore.QCoreApplication.translate("U", "使用winetricks打开指定容器"))
-w11WithWineLib = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/winetricks.svg"), QtCore.QCoreApplication.translate("U", "使用winetricks打开指定容器（使用Wine运行器运行库）"))
+w8 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "设置 run_v3.sh 的文管为 Deepin 默认文管"))
+w9 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "设置 run_v3.sh 的文管为 Wine 默认文管"))
+w10 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "重新安装 deepin-wine-helper"))
+w11 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/winetricks.svg"), QtCore.QCoreApplication.translate("U", "使用winetricks打开指定容器"))
+w11WithWineLib = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/winetricks.svg"), QtCore.QCoreApplication.translate("U", "使用winetricks打开指定容器（使用Wine运行器运行库）"))
 w11WithWineLib.setDisabled(True)
 settingRunV3Sh.addAction(w8)
 settingRunV3Sh.addAction(w9)
@@ -2954,61 +2955,61 @@ wineOption.addAction(w11)
 #wineOption.addAction(w11WithWineLib)
 wineOption.addSeparator()
 optionCheckDemo = wineOption.addMenu(QtCore.QCoreApplication.translate("U", "组件功能测试"))
-vbDemo = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "测试 Visual Basic 6 程序"))
-netDemo = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "测试 .net framework 程序"))
-netIEDemo = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "测试 .net framework + Internet Explorer 程序"))
+vbDemo = QtGui.QAction(QtCore.QCoreApplication.translate("U", "测试 Visual Basic 6 程序"))
+netDemo = QtGui.QAction(QtCore.QCoreApplication.translate("U", "测试 .net framework 程序"))
+netIEDemo = QtGui.QAction(QtCore.QCoreApplication.translate("U", "测试 .net framework + Internet Explorer 程序"))
 optionCheckDemo.addAction(vbDemo)
 optionCheckDemo.addAction(netDemo)
 optionCheckDemo.addAction(netIEDemo)
 wineOption.addSeparator()
 wm3 = wineOption.addMenu(QtCore.QCoreApplication.translate("U", "启用/禁用功能"))
 ed1 = wm3.addMenu(QtCore.QCoreApplication.translate("U", "启用/禁用 opengl"))
-wm3_1 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "开启 opengl"))
-wm3_2 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "禁用 opengl"))
+wm3_1 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "开启 opengl"))
+wm3_2 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "禁用 opengl"))
 ed1.addAction(wm3_1)
 ed1.addAction(wm3_2)
 ed2 = wm3.addMenu(QtCore.QCoreApplication.translate("U", "安装/卸载 winbind"))
-wm4_1 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "安装 winbind"))
-wm4_2 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "卸载 winbind"))
+wm4_1 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "安装 winbind"))
+wm4_2 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "卸载 winbind"))
 ed2.addAction(wm4_1)
 ed2.addAction(wm4_2)
 dxvkMenu = wm3.addMenu(QtCore.QCoreApplication.translate("U", "安装/卸载 DXVK"))
-installDxvk = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "安装 DXVK"))
-uninstallDxvk = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-er r o r.svg"), QtCore.QCoreApplication.translate("U", "卸载 DXVK"))
+installDxvk = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "安装 DXVK"))
+uninstallDxvk = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-er r o r.svg"), QtCore.QCoreApplication.translate("U", "卸载 DXVK"))
 dxvkMenu.addAction(installDxvk)
 dxvkMenu.addAction(uninstallDxvk)
 vkd3dMenu = wm3.addMenu(QtCore.QCoreApplication.translate("U", "安装/卸载 Vkd3d"))
-installvkd3d = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "安装 Vkd3d"))
-uninstallvkd3d = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "卸载 Vkd3d"))
+installvkd3d = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "安装 Vkd3d"))
+uninstallvkd3d = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "卸载 Vkd3d"))
 vkd3dMenu.addAction(installvkd3d)
 vkd3dMenu.addAction(uninstallvkd3d)
 wineOption.addSeparator()
 wineOption.addAction(deleteDesktopIcon)
 wineOption.addSeparator()
 settingWineBottleCreateLink = wm3.addMenu(QtCore.QCoreApplication.translate("U", "启用/禁止指定 wine 容器生成快捷方式"))
-enabledWineBottleCreateLink = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "允许指定 wine 容器生成快捷方式"))
-disbledWineBottleCreateLink = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "禁止指定 wine 容器生成快捷方式"))
+enabledWineBottleCreateLink = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "允许指定 wine 容器生成快捷方式"))
+disbledWineBottleCreateLink = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "禁止指定 wine 容器生成快捷方式"))
 settingWineBottleCreateLink.addAction(enabledWineBottleCreateLink)
 settingWineBottleCreateLink.addAction(disbledWineBottleCreateLink)
 settingWineCrashDialog = wm3.addMenu(QtCore.QCoreApplication.translate("U", "启用/禁用指定 wine 容器崩溃提示窗口"))
-disbledWineCrashDialog = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "禁用指定 wine 容器崩溃提示窗口"))
-enabledWineCrashDialog = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "启用指定 wine 容器崩溃提示窗口"))
+disbledWineCrashDialog = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "禁用指定 wine 容器崩溃提示窗口"))
+enabledWineCrashDialog = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "启用指定 wine 容器崩溃提示窗口"))
 settingWineCrashDialog.addAction(enabledWineCrashDialog)
 settingWineCrashDialog.addAction(disbledWineCrashDialog)
 settingOpenProgram = wm3.addMenu(QtCore.QCoreApplication.translate("U", "启用/禁止指定 wine 容器创建文件关联"))
-enabledOpenProgram = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "允许指定 wine 容器创建文件关联"))
-disbledOpenProgram = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "禁止指定 wine 容器创建文件关联"))
+enabledOpenProgram = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-ok.svg"), QtCore.QCoreApplication.translate("U", "允许指定 wine 容器创建文件关联"))
+disbledOpenProgram = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "禁止指定 wine 容器创建文件关联"))
 settingOpenProgram.addAction(enabledOpenProgram)
 settingOpenProgram.addAction(disbledOpenProgram)
 settingHttpProxy = wineOption.addMenu(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "设置指定 Wine 容器代理"))
-enabledHttpProxy = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "设置指定 wine 容器的代理"))
-disbledHttpProxy = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "禁用指定 wine 容器的代理"))
+enabledHttpProxy = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "设置指定 wine 容器的代理"))
+disbledHttpProxy = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/dialog-error.svg"), QtCore.QCoreApplication.translate("U", "禁用指定 wine 容器的代理"))
 settingHttpProxy.addAction(enabledHttpProxy)
 settingHttpProxy.addAction(disbledHttpProxy)
 dllOver = wineOption.addMenu(QtCore.QCoreApplication.translate("U", "函数顶替库列表"))
-saveDllOver = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(43), QtCore.QCoreApplication.translate("U", "导出函数顶替列表"))
-addDllOver = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(32), QtCore.QCoreApplication.translate("U", "导入函数顶替列表"))
-editDllOver = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "编辑函数顶替库列表"))
+saveDllOver = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DialogSaveButton), QtCore.QCoreApplication.translate("U", "导出函数顶替列表"))
+addDllOver = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogNewFolder), QtCore.QCoreApplication.translate("U", "导入函数顶替列表"))
+editDllOver = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/preferences-system.svg"), QtCore.QCoreApplication.translate("U", "编辑函数顶替库列表"))
 dllOver.addAction(saveDllOver)
 dllOver.addAction(addDllOver)
 dllOver.addAction(editDllOver)
@@ -3053,12 +3054,12 @@ installvkd3d.triggered.connect(InstallVkd3d)
 uninstallvkd3d.triggered.connect(UninstallVkd3d)
 deletePartIcon.triggered.connect(lambda: threading.Thread(target=os.system, args=[f"python3 '{programPath}/BuildDesktop.py'"]).start())
 deleteDesktopIcon.triggered.connect(DeleteDesktopIcon)
-enabledWineBottleCreateLink.triggered.connect(lambda: RunWineProgram("reg' delete 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v winemenubuilder.exe '/f"))
-disbledWineBottleCreateLink.triggered.connect(lambda: RunWineProgram("reg' add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v winemenubuilder.exe '/f"))
-disbledWineCrashDialog.triggered.connect(lambda: RunWineProgram("reg' add 'HKEY_CURRENT_USER\Software\Wine\WineDbg' /v ShowCrashDialog /t REG_DWORD /d 00000000 '/f"))
-enabledWineCrashDialog.triggered.connect(lambda: RunWineProgram("reg' add 'HKEY_CURRENT_USER\Software\Wine\WineDbg' /v ShowCrashDialog /t REG_DWORD /d 00000001 '/f"))
-disbledOpenProgram.triggered.connect(lambda: RunWineProgram("reg' add 'HKEY_CURRENT_USER\Software\Wine\FileOpenAssociations' /v Enable /d N '/f"))
-enabledOpenProgram.triggered.connect(lambda: RunWineProgram("reg' add 'HKEY_CURRENT_USER\Software\Wine\FileOpenAssociations' /v Enable /d Y '/f"))
+enabledWineBottleCreateLink.triggered.connect(lambda: RunWineProgram("reg' delete 'HKEY_CURRENT_USER\\Software\\Wine\\DllOverrides' /v winemenubuilder.exe '/f"))
+disbledWineBottleCreateLink.triggered.connect(lambda: RunWineProgram("reg' add 'HKEY_CURRENT_USER\\Software\\Wine\\DllOverrides' /v winemenubuilder.exe '/f"))
+disbledWineCrashDialog.triggered.connect(lambda: RunWineProgram("reg' add 'HKEY_CURRENT_USER\\Software\\Wine\\WineDbg' /v ShowCrashDialog /t REG_DWORD /d 00000000 '/f"))
+enabledWineCrashDialog.triggered.connect(lambda: RunWineProgram("reg' add 'HKEY_CURRENT_USER\\Software\\Wine\\WineDbg' /v ShowCrashDialog /t REG_DWORD /d 00000001 '/f"))
+disbledOpenProgram.triggered.connect(lambda: RunWineProgram("reg' add 'HKEY_CURRENT_USER\\Software\\Wine\\FileOpenAssociations' /v Enable /d N '/f"))
+enabledOpenProgram.triggered.connect(lambda: RunWineProgram("reg' add 'HKEY_CURRENT_USER\\Software\\Wine\\FileOpenAssociations' /v Enable /d Y '/f"))
 enabledHttpProxy.triggered.connect(SetHttpProxy)
 disbledHttpProxy.triggered.connect(DisbledHttpProxy)
 saveDllOver.triggered.connect(SaveDllList)
@@ -3069,16 +3070,16 @@ netDemo.triggered.connect(lambda: RunWineProgram(f"{programPath}/Test/net.exe"))
 netIEDemo.triggered.connect(lambda: RunWineProgram(f"{programPath}/Test/netandie.exe"))
 
 virtualMachine = menu.addMenu(QtCore.QCoreApplication.translate("U", "虚拟机(&V)"))
-v1 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/virtualbox.svg"), QtCore.QCoreApplication.translate("U", "使用虚拟机运行 Windows 应用"))
+v1 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/virtualbox.svg"), QtCore.QCoreApplication.translate("U", "使用虚拟机运行 Windows 应用"))
 virtualMachine.addAction(v1)
 v1.triggered.connect(RunVM)
 
 checkValue = menu.addMenu(QtCore.QCoreApplication.translate("U", "校验值计算(&S)"))
-md5Value = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(32), QtCore.QCoreApplication.translate("U", "MD5(&M)"))
-sha1Value = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(32), QtCore.QCoreApplication.translate("U", "SHA1(&M)"))
-base64Value = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(32), QtCore.QCoreApplication.translate("U", "Base64(建议小文件)(&B)"))
-sha256Value = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(32), QtCore.QCoreApplication.translate("U", "SHA256(&S)"))
-sha512Value = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(32), QtCore.QCoreApplication.translate("U", "SHA512(&S)"))
+md5Value = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogNewFolder), QtCore.QCoreApplication.translate("U", "MD5(&M)"))
+sha1Value = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogNewFolder), QtCore.QCoreApplication.translate("U", "SHA1(&M)"))
+base64Value = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogNewFolder), QtCore.QCoreApplication.translate("U", "Base64(建议小文件)(&B)"))
+sha256Value = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogNewFolder), QtCore.QCoreApplication.translate("U", "SHA256(&S)"))
+sha512Value = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogNewFolder), QtCore.QCoreApplication.translate("U", "SHA512(&S)"))
 md5Value.triggered.connect(lambda: ValueCheck().Get("MD5"))
 sha1Value.triggered.connect(lambda: ValueCheck().Get("SHA1"))
 base64Value.triggered.connect(lambda: ValueCheck().Get("BASE64"))
@@ -3092,10 +3093,10 @@ checkValue.addAction(sha512Value)
 
 
 safeWebsize = menu.addMenu(QtCore.QCoreApplication.translate("U", "云沙箱(&C)"))
-s1 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/360.ico"), QtCore.QCoreApplication.translate("U", "360 沙箱云"))
-s2 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/threatbook.png"), QtCore.QCoreApplication.translate("U", "微步云沙箱"))
-s3 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/virustotal.svg"), QtCore.QCoreApplication.translate("U", "VIRUSTOTAL"))
-s4 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/logo_bdsys.png"), QtCore.QCoreApplication.translate("U", "计算机病毒防御技术国家工程实验室"))
+s1 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/360.ico"), QtCore.QCoreApplication.translate("U", "360 沙箱云"))
+s2 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/threatbook.png"), QtCore.QCoreApplication.translate("U", "微步云沙箱"))
+s3 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/virustotal.svg"), QtCore.QCoreApplication.translate("U", "VIRUSTOTAL"))
+s4 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/logo_bdsys.png"), QtCore.QCoreApplication.translate("U", "计算机病毒防御技术国家工程实验室"))
 safeWebsize.addAction(s1)
 safeWebsize.addAction(s2)
 safeWebsize.addAction(s3)
@@ -3106,12 +3107,12 @@ s3.triggered.connect(lambda: webbrowser.open_new_tab("https://www.virustotal.com
 s4.triggered.connect(lambda: webbrowser.open_new_tab("https://cloud.vdnel.cn/"))
 
 log = menu.addMenu(QtCore.QCoreApplication.translate("U", "日志(&L)"))
-getDllInfo = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "查询 Dll"))
-checkLogText = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "日志分析"))
-saveLogText = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(16), QtCore.QCoreApplication.translate("U", "另存为日志"))
-saveLogReport = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(16), QtCore.QCoreApplication.translate("U", "输出详细日志报告"))
-transLogText = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "翻译日志（翻译后日志分析功能会故障）"))
-uploadLogText = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "上传日志"))
+getDllInfo = QtGui.QAction(QtCore.QCoreApplication.translate("U", "查询 Dll"))
+checkLogText = QtGui.QAction(QtCore.QCoreApplication.translate("U", "日志分析"))
+saveLogText = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DriveFDIcon), QtCore.QCoreApplication.translate("U", "另存为日志"))
+saveLogReport = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DriveFDIcon), QtCore.QCoreApplication.translate("U", "输出详细日志报告"))
+transLogText = QtGui.QAction(QtCore.QCoreApplication.translate("U", "翻译日志（翻译后日志分析功能会故障）"))
+uploadLogText = QtGui.QAction(QtCore.QCoreApplication.translate("U", "上传日志"))
 getDllInfo.triggered.connect(DllWindow.ShowWindow)
 checkLogText.triggered.connect(LogChecking.ShowWindow)
 saveLogText.triggered.connect(SaveLog)
@@ -3126,7 +3127,7 @@ log.addAction(saveLogReport)
 #log.addAction(uploadLogText)
 
 actionList = []
-def AddLib(install: QtWidgets.QAction, uninstall, menu, info):
+def AddLib(install: QtGui.QAction, uninstall, menu, info):
     actionList.append(install)
     actionList.append(uninstall)
     install.triggered.connect(lambda: OpenTerminal(f"bash '{programPath}/InstallRuntime/{info}'"))
@@ -3135,12 +3136,12 @@ def AddLib(install: QtWidgets.QAction, uninstall, menu, info):
     menu.addAction(uninstall)
 
 installLib = menu.addMenu(QtCore.QCoreApplication.translate("U", "应用运行库(&R)"))
-howtouseQemuUser = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/bilibili.ico"), QtCore.QCoreApplication.translate("U", "Qemu User 使用教程（配合运行库实现在非 X86 架构运行 X86 Wine）"))
+howtouseQemuUser = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/bilibili.ico"), QtCore.QCoreApplication.translate("U", "Qemu User 使用教程（配合运行库实现在非 X86 架构运行 X86 Wine）"))
 howtouseQemuUser.triggered.connect(lambda: webbrowser.open_new_tab("https://www.bilibili.com/read/cv23185651"))
-runnerlibinfo = QtWidgets.QAction("只在运行器使用的运行库（不与其他运行库以及兼容层冲突）")
-installRunnerLib = QtWidgets.QAction("安装运行库")
-statusRunnerLib = QtWidgets.QAction("当前状态：未安装")
-removeRunnerLib = QtWidgets.QAction("移除运行库")
+runnerlibinfo = QtGui.QAction("只在运行器使用的运行库（不与其他运行库以及兼容层冲突）")
+installRunnerLib = QtGui.QAction("安装运行库")
+statusRunnerLib = QtGui.QAction("当前状态：未安装")
+removeRunnerLib = QtGui.QAction("移除运行库")
 runnerlibinfo.setDisabled(True)
 statusRunnerLib.setDisabled(True)
 removeRunnerLib.setDisabled(True)
@@ -3152,7 +3153,7 @@ installLib.addAction(installRunnerLib)
 installLib.addAction(removeRunnerLib)
 diyRunnerLib = installLib.addMenu("定制运行库")
 diyRunnerLib.setDisabled(True)
-diyRunnerLibRemoveTips = QtWidgets.QAction("移除库")
+diyRunnerLibRemoveTips = QtGui.QAction("移除库")
 diyRunnerLibRemoveTips.setDisabled(True)
 diyRunnerLib.addAction(diyRunnerLibRemoveTips)
 installRunnerLib.triggered.connect(lambda: threading.Thread(target=OpenTerminal, args=[f"bash '{programPath}/WineLib/install.sh'"]).start())
@@ -3167,7 +3168,7 @@ if os.path.exists(f"{programPath}/WineLib/usr"):
     mapLink = []
     def AddRunnerLib(number, name):
         global diyRunnerLib
-        action = QtWidgets.QAction(f"{name}")
+        action = QtGui.QAction(f"{name}")
         mapLink.append(action)
         action.triggered.connect(lambda: DelRunnerLib(int(str(number))))
         diyRunnerLib.addAction(action)    
@@ -3193,12 +3194,12 @@ if os.path.exists(f"{programPath}/WineLib/usr"):
     print(libPathList)
 if os.path.exists(f"{programPath}/InstallRuntime") and (not os.system("which bwrap")):
     installLib.addSeparator()
-    systemalllibinfo = QtWidgets.QAction("全局运行库（与其他运行库以及部分兼容层冲突）")    
+    systemalllibinfo = QtGui.QAction("全局运行库（与其他运行库以及部分兼容层冲突）")    
     systemalllibinfo.setDisabled(True)
     installLib.addAction(systemalllibinfo)
     installQemuMenu = installLib.addMenu(QtCore.QCoreApplication.translate("U", "安装 Qemu User"))
-    installQemu = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "安装 Qemu User"))
-    removeQemu = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "卸载 Qemu User"))
+    installQemu = QtGui.QAction(QtCore.QCoreApplication.translate("U", "安装 Qemu User"))
+    removeQemu = QtGui.QAction(QtCore.QCoreApplication.translate("U", "卸载 Qemu User"))
     installQemuMenu.addAction(installQemu)
     installQemuMenu.addAction(removeQemu)
     installQemu.triggered.connect(lambda: OpenTerminal(f"bash '{programPath}/InstallQemuUser.sh'"))
@@ -3209,46 +3210,46 @@ if os.path.exists(f"{programPath}/InstallRuntime") and (not os.system("which bwr
         if i[-3:] == ".sh":
             print(f"检测到库 {os.path.splitext(i)[0]}")
             
-            AddLib(QtWidgets.QAction(QtCore.QCoreApplication.translate("U", f"安装 {os.path.splitext(i)[0]} 运行库")), QtWidgets.QAction(QtCore.QCoreApplication.translate("U", f"卸载 {os.path.splitext(i)[0]} 运行库")), installLib.addMenu(QtCore.QCoreApplication.translate("U", f"运行库 {os.path.splitext(i)[0]}")), i)
+            AddLib(QtGui.QAction(QtCore.QCoreApplication.translate("U", f"安装 {os.path.splitext(i)[0]} 运行库")), QtGui.QAction(QtCore.QCoreApplication.translate("U", f"卸载 {os.path.splitext(i)[0]} 运行库")), installLib.addMenu(QtCore.QCoreApplication.translate("U", f"运行库 {os.path.splitext(i)[0]}")), i)
 
 
 
 qemuMenu = menu.addMenu(QtCore.QCoreApplication.translate("U", "容器(&C)"))
-unpackDeb = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(32), QtCore.QCoreApplication.translate("U", "解包 deb 提取容器"))
+unpackDeb = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogNewFolder), QtCore.QCoreApplication.translate("U", "解包 deb 提取容器"))
 qemuMenu.addAction(unpackDeb)
 unpackDeb.triggered.connect(UnPackage)
 if len(qemuBottleList) >= 1:
-    configMenu = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/CHROOT.png"), QtCore.QCoreApplication.translate("U", "配置指定 Chroot 容器"))
+    configMenu = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/CHROOT.png"), QtCore.QCoreApplication.translate("U", "配置指定 Chroot 容器"))
     qemuMenu.addAction(configMenu)
     configMenu.triggered.connect(ConfigQemu)
     print(qemuBottleList)
 
 videoHelp = menu.addMenu(QtCore.QCoreApplication.translate("U", "视频教程(&V)"))
-videoHelpAction = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/bilibili.ico"), QtCore.QCoreApplication.translate("U", "视频教程（Bilibili）"))
-videoHelpActionYoutube = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(20), QtCore.QCoreApplication.translate("U", "视频教程（Youtube）"))
+videoHelpAction = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/bilibili.ico"), QtCore.QCoreApplication.translate("U", "视频教程（Bilibili）"))
+videoHelpActionYoutube = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DriveNetIcon), QtCore.QCoreApplication.translate("U", "视频教程（Youtube）"))
 videoHelpAction.triggered.connect(lambda: webbrowser.open_new_tab("https://space.bilibili.com/695814694/channel/collectiondetail?sid=1610353"))
 videoHelpActionYoutube.triggered.connect(lambda: webbrowser.open_new_tab("https://www.youtube.com/watch?v=qDaPBiIdGAs&list=PLoXD11L1NQAx8A1Qskgu3tUoi0nHKJcmg"))
 videoHelp.addAction(videoHelpAction)
 videoHelp.addAction(videoHelpActionYoutube)
 
 help = menu.addMenu(QtCore.QCoreApplication.translate("U", "帮助(&H)"))
-runStatusWebSize = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(20), QtCore.QCoreApplication.translate("U", "查询程序在 Wine 的运行情况"))
-h1 = help.addMenu(QtWidgets.QApplication.style().standardIcon(20), QtCore.QCoreApplication.translate("U", "程序官网"))
-h2 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "小提示"))
-wineRunnerHelp = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(20), QtCore.QCoreApplication.translate("U", "Wine运行器和Wine打包器傻瓜式使用教程（小白专用） By 鹤舞白沙"))
-h3 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "更新内容"))
-h4 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "鸣谢名单"))
-h5 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "更新这个程序"))
-appreciate = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "赞赏作者/请作者喝杯茶"))
-programInformation = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "获取程序公告"))
-h6 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "反馈这个程序的建议和问题"))
-h7 = QtWidgets.QAction(QtGui.QIcon(iconPath), QtCore.QCoreApplication.translate("U", "关于这个程序"))
-h8 = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/qtcreator.svg"), QtCore.QCoreApplication.translate("U", "关于 Qt"))
-gfdgdxiio = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(20), QtCore.QCoreApplication.translate("U", "作者个人站"))
-gitee = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/gitee.png"), QtCore.QCoreApplication.translate("U", "Gitee"))
-github = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/github-fluidicon.png"), QtCore.QCoreApplication.translate("U", "Github"))
-gitlab = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/gitlab.png"), QtCore.QCoreApplication.translate("U", "Gitlab"))
-jihu = QtWidgets.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/sourceforge.png"), QtCore.QCoreApplication.translate("U", "Sourceforge"))
+runStatusWebSize = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DriveNetIcon), QtCore.QCoreApplication.translate("U", "查询程序在 Wine 的运行情况"))
+h1 = help.addMenu(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DriveNetIcon), QtCore.QCoreApplication.translate("U", "程序官网"))
+h2 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "小提示"))
+wineRunnerHelp = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DriveNetIcon), QtCore.QCoreApplication.translate("U", "Wine运行器和Wine打包器傻瓜式使用教程（小白专用） By 鹤舞白沙"))
+h3 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "更新内容"))
+h4 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "鸣谢名单"))
+h5 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "更新这个程序"))
+appreciate = QtGui.QAction(QtCore.QCoreApplication.translate("U", "赞赏作者/请作者喝杯茶"))
+programInformation = QtGui.QAction(QtCore.QCoreApplication.translate("U", "获取程序公告"))
+h6 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "反馈这个程序的建议和问题"))
+h7 = QtGui.QAction(QtGui.QIcon(iconPath), QtCore.QCoreApplication.translate("U", "关于这个程序"))
+h8 = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/qtcreator.svg"), QtCore.QCoreApplication.translate("U", "关于 Qt"))
+gfdgdxiio = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DriveNetIcon), QtCore.QCoreApplication.translate("U", "作者个人站"))
+gitee = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/gitee.png"), QtCore.QCoreApplication.translate("U", "Gitee"))
+github = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/github-fluidicon.png"), QtCore.QCoreApplication.translate("U", "Github"))
+gitlab = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/gitlab.png"), QtCore.QCoreApplication.translate("U", "Gitlab"))
+jihu = QtGui.QAction(QtGui.QIcon(f"{programPath}/Icon/Function/sourceforge.png"), QtCore.QCoreApplication.translate("U", "Sourceforge"))
 h1.addAction(gfdgdxiio)
 h1.addAction(gitee)
 h1.addAction(github)
@@ -3263,9 +3264,9 @@ help.addAction(h3)
 help.addAction(h4)
 help.addSeparator()
 
-wikiHelp = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(20), QtCore.QCoreApplication.translate("U", "程序 Wiki"))
+wikiHelp = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DriveNetIcon), QtCore.QCoreApplication.translate("U", "程序 Wiki"))
 help.addAction(wikiHelp)
-videoHelp = help.addMenu(QtWidgets.QApplication.style().standardIcon(20), QtCore.QCoreApplication.translate("U", "视频教程"))
+videoHelp = help.addMenu(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DriveNetIcon), QtCore.QCoreApplication.translate("U", "视频教程"))
 videoHelp.addAction(videoHelpAction)
 help.addSeparator()
 help.addAction(h5)
@@ -3276,7 +3277,7 @@ help.addAction(h7)
 help.addAction(h8)
 help.addSeparator()
 hm1 = help.addMenu(QtCore.QCoreApplication.translate("U", "更多生态适配应用"))
-hm1_1 = QtWidgets.QAction(QtCore.QCoreApplication.translate("U", "运行 Android 应用：UEngine 运行器"))
+hm1_1 = QtGui.QAction(QtCore.QCoreApplication.translate("U", "运行 Android 应用：UEngine 运行器"))
 hm1.addAction(hm1_1)
 gfdgdxiio.triggered.connect(lambda: webbrowser.open_new_tab("https://gfdgd-xi.github.io"))
 gitee.triggered.connect(lambda: webbrowser.open_new_tab("https://gitee.com/gfdgd-xi/deep-wine-runner"))
@@ -3386,7 +3387,7 @@ if (__name__ == "__main__"):
     window.show()
     # Mini 模式
     # MiniMode(True)
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 

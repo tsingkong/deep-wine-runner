@@ -3,7 +3,7 @@
 # 作者：gfdgd xi、为什么您不喜欢熊出没和阿布
 # 版本：2.0.1
 # 感谢：感谢 deepin-wine 团队，提供了 deepin-wine 给大家使用，让我能做这个程序
-# 基于 Python3 的 PyQt5 构建
+# 基于 Python3 的 PyQt6 构建
 #########################################################################
 #################
 # 引入所需的库
@@ -21,9 +21,9 @@ import traceback
 import subprocess
 import webbrowser
 from PIL import Image
-import PyQt5.QtGui as QtGui
-import PyQt5.QtCore as QtCore
-import PyQt5.QtWidgets as QtWidgets
+import PyQt6.QtGui as QtGui
+import PyQt6.QtCore as QtCore
+import PyQt6.QtWidgets as QtWidgets
 from trans import *
 from DefaultSetting import *
 from Model import *
@@ -245,23 +245,23 @@ def make_deb(build=False):
     badComplete = False
     # 规范检测
     if e1_text.text().lower() != e1_text.text():
-        if QtWidgets.QMessageBox.warning(window, "提示", f"包名 {e1_text.text()} 似乎不符合规范，可能会导致打包后的包无法投稿到应用商店，是否继续？\n可参考 deb 安装包打包标准", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.No:
+        if QtWidgets.QMessageBox.warning(window, "提示", f"包名 {e1_text.text()} 似乎不符合规范，可能会导致打包后的包无法投稿到应用商店，是否继续？\n可参考 deb 安装包打包标准", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No) == QtWidgets.QMessageBox.StandardButton.No:
             disabled_or_NORMAL_all(True)
             label13_text_change("用户已取消")
             return    
     for i in range(len(iconUiList)):
         if os.path.splitext(iconUiList[i][4].text())[1] == ".ico":
-            if QtWidgets.QMessageBox.warning(window, "提示", f"图标 {iconUiList[i][4].text()} 似乎为 ico 格式，可能会导致打包后的程序在启动器的图标无法正常显示，是否继续？", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.No:
+            if QtWidgets.QMessageBox.warning(window, "提示", f"图标 {iconUiList[i][4].text()} 似乎为 ico 格式，可能会导致打包后的程序在启动器的图标无法正常显示，是否继续？", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No) == QtWidgets.QMessageBox.StandardButton.No:
                 disabled_or_NORMAL_all(True)
                 label13_text_change("用户已取消")
                 return    
         if os.path.exists(iconUiList[i][0].text()) and not "c:" in iconUiList[i][0].text().lower():
             if not e6_text.text() in iconUiList[i][0].text():
-                if QtWidgets.QMessageBox.warning(window, "提示", f"路径 {iconUiList[i][0].text()} 似乎不符合规范且不位于容器内，可能会导致打包后的程序无法运行，是否继续？\n可参考 Windows 下的文件路径", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.No:
+                if QtWidgets.QMessageBox.warning(window, "提示", f"路径 {iconUiList[i][0].text()} 似乎不符合规范且不位于容器内，可能会导致打包后的程序无法运行，是否继续？\n可参考 Windows 下的文件路径", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No) == QtWidgets.QMessageBox.StandardButton.No:
                     disabled_or_NORMAL_all(True)
                     label13_text_change("用户已取消")
                     return    
-            if QtWidgets.QMessageBox.warning(window, "提示", f"路径 {iconUiList[i][0].text()} 似乎不符合规范，可能会导致打包后的程序无法运行，是否继续？\n可参考 Windows 下的文件路径", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.No:
+            if QtWidgets.QMessageBox.warning(window, "提示", f"路径 {iconUiList[i][0].text()} 似乎不符合规范，可能会导致打包后的程序无法运行，是否继续？\n可参考 Windows 下的文件路径", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No) == QtWidgets.QMessageBox.StandardButton.No:
                 disabled_or_NORMAL_all(True)
                 label13_text_change("用户已取消")
                 return
@@ -273,23 +273,23 @@ def make_deb(build=False):
         disabled_or_NORMAL_all(True)
         label13_text_change("必填信息没有填写完整，无法继续构建 deb 包")
         return
-    if QtWidgets.QMessageBox.question(widget, transla.transe("U", "提示"), transla.transe("U", "打包将会改动现在选择的容器，是否继续？")) == QtWidgets.QMessageBox.No:
+    if QtWidgets.QMessageBox.question(widget, transla.transe("U", "提示"), transla.transe("U", "打包将会改动现在选择的容器，是否继续？")) == QtWidgets.QMessageBox.StandardButton.No:
         disabled_or_NORMAL_all(True)
         return
     # 警告信息
     for i in iconUiList:
         if os.path.exists(i[0].text()):
-            if QtWidgets.QMessageBox.warning(window, "警告", "输入的路径似乎是一个绝对路径\n不建议打包绝对路径，建议是 Wine 容器内路径\n是否继续打包？", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.No:
+            if QtWidgets.QMessageBox.warning(window, "警告", "输入的路径似乎是一个绝对路径\n不建议打包绝对路径，建议是 Wine 容器内路径\n是否继续打包？", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No) == QtWidgets.QMessageBox.StandardButton.No:
                 disabled_or_NORMAL_all(True)
                 return
         if "c:/user" in i[0].text().replace(" ", "").replace("\\", "/").lower():
-            if QtWidgets.QMessageBox.warning(window, "警告", "输入的路径似乎是在容器的用户目录内，打包后可能会出现找不到 exe 的情况，是否继续？", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.No:
+            if QtWidgets.QMessageBox.warning(window, "警告", "输入的路径似乎是在容器的用户目录内，打包后可能会出现找不到 exe 的情况，是否继续？", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No) == QtWidgets.QMessageBox.StandardButton.No:
                 disabled_or_NORMAL_all(True)
                 return
         if i[0].text()[:2].lower() == "c:" and not os.path.exists("{}/drive_c/{}".format(
             e6_text.text(), 
             i[0].text()[3:].replace("\\", '/'))):
-            if QtWidgets.QMessageBox.warning(window, "警告", "输入的路径似乎在 Wine 容器不存在（如果只是大小写错误导致的误判，请忽略）\n是否继续打包？", QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.No:
+            if QtWidgets.QMessageBox.warning(window, "警告", "输入的路径似乎在 Wine 容器不存在（如果只是大小写错误导致的误判，请忽略）\n是否继续打包？", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No) == QtWidgets.QMessageBox.StandardButton.No:
                 disabled_or_NORMAL_all(True)
                 return
     #thread = threading.Thread(target=make_deb_threading)
@@ -1475,10 +1475,10 @@ helperConfigPathLayout.addWidget(helperConfigPathText)
 helperConfigPathButton.clicked.connect(BrowserHelperConfigPathText)
 helperConfigPathButton.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 helperConfigPathMenu = QtWidgets.QMenu(window)
-delHelperConfigPath = QtWidgets.QAction("取消选择")
+delHelperConfigPath = QtGui.QAction("取消选择")
 delHelperConfigPath.triggered.connect(ClearHelperConfigPathText)
 helperConfigPathMenu.addAction(delHelperConfigPath)
-helperConfigPathButton.customContextMenuRequested.connect(lambda: helperConfigPathMenu.exec_(QtGui.QCursor.pos()))
+helperConfigPathButton.customContextMenuRequested.connect(lambda: helperConfigPathMenu.exec(QtGui.QCursor.pos()))
 button1.clicked.connect(button1_cl)
 button2.clicked.connect(lambda: button2_cl(0))
 mapLink.append(e9_text)
@@ -1605,25 +1605,25 @@ programmenu = menu.addMenu(transla.transe("U", "程序（&P）"))
 debMenu = menu.addMenu(transla.transe("U", "deb 包"))
 uploadSparkStore = menu.addMenu(transla.transe("U", "投稿到星火应用商店"))
 help = menu.addMenu(transla.transe("U", "帮助"))
-openFile = QtWidgets.QAction(transla.transe("U", "打开配置文件"))
-saveFile = QtWidgets.QAction(transla.transe("U", "保存配置文件"))
-setMiniFont = QtWidgets.QAction(transla.transe("U", "使用小字体"))
-setDefaultFont = QtWidgets.QAction(transla.transe("U", "使用默认大小字体"))
-hideShowText = QtWidgets.QAction(transla.transe("U", "隐藏输出框"))
+openFile = QtGui.QAction(transla.transe("U", "打开配置文件"))
+saveFile = QtGui.QAction(transla.transe("U", "保存配置文件"))
+setMiniFont = QtGui.QAction(transla.transe("U", "使用小字体"))
+setDefaultFont = QtGui.QAction(transla.transe("U", "使用默认大小字体"))
+hideShowText = QtGui.QAction(transla.transe("U", "隐藏输出框"))
 hideShowText.setCheckable(True)
-exit = QtWidgets.QAction(transla.transe("U", "退出程序"))
-debE = QtWidgets.QAction(transla.transe("U", "只读取 Control 信息"))
-debX = QtWidgets.QAction(transla.transe("U", "读取所有（需解包，时间较久）"))
-uploadSparkStoreWebsize = QtWidgets.QAction(transla.transe("U", "从网页端投稿"))
+exit = QtGui.QAction(transla.transe("U", "退出程序"))
+debE = QtGui.QAction(transla.transe("U", "只读取 Control 信息"))
+debX = QtGui.QAction(transla.transe("U", "读取所有（需解包，时间较久）"))
+uploadSparkStoreWebsize = QtGui.QAction(transla.transe("U", "从网页端投稿"))
 if os.path.exists("/opt/spark-store-submitter/bin/spark-store-submitter"):
-    uploadSparkStoreProgram = QtWidgets.QAction(transla.transe("U", "使用投稿器投稿（推荐）"))
+    uploadSparkStoreProgram = QtGui.QAction(transla.transe("U", "使用投稿器投稿（推荐）"))
 else:
-    uploadSparkStoreProgram = QtWidgets.QAction(transla.transe("U", "使用投稿器投稿（推荐，请先安装投稿器）"))
+    uploadSparkStoreProgram = QtGui.QAction(transla.transe("U", "使用投稿器投稿（推荐，请先安装投稿器）"))
     uploadSparkStoreProgram.setDisabled(True)
 tip = QtWidgets.QAction(transla.transe("U", "小提示"))
-getPdfHelp = QtWidgets.QAction(transla.transe("U", "Wine运行器和Wine打包器傻瓜式使用教程（小白专用）\nBy @鹤舞白沙"))
+getPdfHelp = QtWidgets.QAction(transla.transe("U", "Wine运行器和Wine打包器傻瓜式使用教程（小白专用）\nBy @雁舞白沙"))
 videoHelp = menu.addMenu(transla.transe("U", "视频教程(&V)"))
-videoHelpAction = QtWidgets.QAction(QtWidgets.QApplication.style().standardIcon(20), transla.transe("U", "视频教程"))
+videoHelpAction = QtGui.QAction(QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DriveNetIcon), transla.transe("U", "视频教程"))
 videoHelpAction.triggered.connect(lambda: webbrowser.open_new_tab("https://space.bilibili.com/695814694/channel/collectiondetail?sid=1610353"))
 videoHelp.addAction(videoHelpAction)
 openFile.triggered.connect(OpenConfigFile)
@@ -1632,8 +1632,8 @@ hideShowText.triggered.connect(lambda: textbox1.setHidden(hideShowText.isChecked
 exit.triggered.connect(window.close)
 tip.triggered.connect(helps)
 wineDepend = menu.addMenu("Wine 应用依赖（非 Deepin/UOS 发行版）")
-uosPackingTools = QtWidgets.QAction("安装维护打包工具箱（需要先安装星火应用商店）")
-sparkStoreWebsite = QtWidgets.QAction("打开星火应用商店官网")
+uosPackingTools = QtGui.QAction("安装维护打包工具箱（需要先安装星火应用商店）")
+sparkStoreWebsite = QtGui.QAction("打开星火应用商店官网")
 if os.system("which spark-store"):
     uosPackingTools.setDisabled(True)
 uosPackingTools.triggered.connect(lambda: threading.Thread(target=os.system, args=["spark-store spk://store/tools/uos-packaging-tools"]).start())
@@ -1641,8 +1641,8 @@ sparkStoreWebsite.triggered.connect(lambda: webbrowser.open_new_tab("https://spa
 wineDepend.addAction(sparkStoreWebsite)
 wineDepend.addAction(uosPackingTools)
 turnDebToOther = menu.addMenu("转换安装包格式")
-toRpm = QtWidgets.QAction("转 rpm")
-toTarZst = QtWidgets.QAction("转 tar.zst")
+toRpm = QtGui.QAction("转 rpm")
+toTarZst = QtGui.QAction("转 tar.zst")
 toRpm.triggered.connect(ToRpm)
 toTarZst.triggered.connect(ToTarZst)
 turnDebToOther.addAction(toRpm)
@@ -1767,5 +1767,5 @@ if (window.frameGeometry().width() > app.primaryScreen().availableGeometry().siz
 
 if (__name__ == "__main__"):
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
     # TODO：解包只读control和解包全部读取
