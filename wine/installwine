@@ -327,6 +327,8 @@ class GetInfo():
             result = True
         if (data == "lat-x86_64" and self.isLatamd64Runtime):
             result = True
+        if (data == "lat-amd64" and self.isLatamd64Runtime):
+            result = True
         if (data == "qemu-user" and self.isQemuUser):
             result = True
         if (data == "qemu-user-i386" and self.isQemuUseri386Runtime):
