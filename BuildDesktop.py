@@ -66,9 +66,9 @@ def ShowDesktop(temp):
         nmodel.setItem(y, 1, QtGui.QStandardItem(i[2]))
         nmodel.setItem(y, 2, QtGui.QStandardItem(i[3]))
         y += 1
-    nmodel.setHeaderData(0, QtCore.Qt.Horizontal, "程序名")
-    nmodel.setHeaderData(1, QtCore.Qt.Horizontal, "运行路径")
-    nmodel.setHeaderData(2, QtCore.Qt.Horizontal, ".desktop 文件所在路径")
+    nmodel.setHeaderData(0, QtCore.Qt.Orientation.Horizontal, "程序名")
+    nmodel.setHeaderData(1, QtCore.Qt.Orientation.Horizontal, "运行路径")
+    nmodel.setHeaderData(2, QtCore.Qt.Orientation.Horizontal, ".desktop 文件所在路径")
     nmodel.setColumnCount(3)
     desktopListView.setModel(nmodel)   
 
