@@ -641,10 +641,10 @@ def KillAllProgram():
     pass
 
 def KillProgram():
-    os.system(f"killall {wine[o1.currentText()]} -9")
-    os.system("killall winedbg -9")
+    os.system(f"pkill -f {wine[o1.currentText()]} -9")
+    os.system("pkill -f winedbg -9")
     exeName = os.path.basename(e2.currentText())
-    os.system(f"killall {exeName} -9")
+    os.system(f"pkill -f {exeName} -9")
 
 def InstallWine():
     threading.Thread(target=OpenTerminal, args=[f"'{programPath}/AllInstall.py'"]).start()
