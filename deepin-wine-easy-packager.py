@@ -481,7 +481,7 @@ class RunThread(QtCore.QThread):
                 self.RunCommand(f"mkdir -pv '{bottlePath}'")
                 self.RunCommand(f"chmod 777 -Rv '{bottlePath}'")
                 # 禁止生成 .desktop 文件
-                self.RunCommand(f"WINEPREFIX='{bottlePath}' {chooseWine} 'reg' 'add' 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v winemenubuilder.exe '/f'")
+                self.RunCommand(f"WINEPREFIX='{bottlePath}' {chooseWine} 'reg' 'add' 'HKEY_CURRENT_USER\\Software\\Wine\\DllOverrides' /v winemenubuilder.exe '/f'")
                 # 写入字体
                 self.RunCommand(f"WINEPREFIX='{bottlePath}' '{programPath}/AutoShell/command/installfont' 1")
                 # 安装包

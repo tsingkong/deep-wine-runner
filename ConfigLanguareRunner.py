@@ -240,7 +240,7 @@ class Command():
             return 0
 
         def StopDll(self) -> int:
-            return os.system(f"WINEPREFIX='{self.wineBottonPath}' '{self.wine}' reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v {os.path.splitext(self.command[1])[0]}  /f")
+            return os.system(f"WINEPREFIX='{self.wineBottonPath}' '{self.wine}' reg add 'HKEY_CURRENT_USER\\Software\\Wine\\DllOverrides' /v {os.path.splitext(self.command[1])[0]}  /f")
 
         def CreateBotton(self):
             self.command = ["bat", "exit"]
@@ -390,27 +390,27 @@ class Command():
             return os.system(commandStr)
             
         def EnabledWineBottleCreateLink(self):
-            self.command = ["bat", "reg", "delete", "HKEY_CURRENT_USER\Software\Wine\DllOverrides", "/v", "winemenubuilder.exe", "/f"]
+            self.command = ["bat", "reg", "delete", "HKEY_CURRENT_USER\\Software\\Wine\\DllOverrides", "/v", "winemenubuilder.exe", "/f"]
             return self.Bat()
 
         def DisbledWineBottleCreateLink(self):
-            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\Software\Wine\DllOverrides", "/v", "winemenubuilder.exe", "/f"]
+            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\\Software\\Wine\\DllOverrides", "/v", "winemenubuilder.exe", "/f"]
             return self.Bat()
 
         def DisbledWineCrashDialog(self):
-            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\Software\Wine\WineDbg", "/v", "ShowCrashDialog", "/t", "REG_DWORD", "/d", "00000000", "/f"]
+            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\\Software\\Wine\\WineDbg", "/v", "ShowCrashDialog", "/t", "REG_DWORD", "/d", "00000000", "/f"]
             return self.Bat()
 
         def EnabledWineCrashDialog(self):
-            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\Software\Wine\WineDbg", "/v", "ShowCrashDialog", "/t", "REG_DWORD", "/d", "00000001", "/f"]
+            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\\Software\\Wine\\WineDbg", "/v", "ShowCrashDialog", "/t", "REG_DWORD", "/d", "00000001", "/f"]
             return self.Bat()
 
         def EnabledHttpProxy(self):
             proxyServerAddress = self.command[1]
             port = self.command[2]
-            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings", "/v", "ProxyEnable", "/t", "REG_DWORD", "/d", "00000001", "/f"]
+            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", "/v", "ProxyEnable", "/t", "REG_DWORD", "/d", "00000001", "/f"]
             self.Bat()
-            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings", "/v", "ProxyServer", "/d", f"{proxyServerAddress}:{port}", "/f"]
+            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", "/v", "ProxyServer", "/d", f"{proxyServerAddress}:{port}", "/f"]
             return self.Bat()
 
         def DecompressionBottle(self):
@@ -428,7 +428,7 @@ class Command():
             
 
         def DisbledHttpProxy(self):
-            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings", "/v", "ProxyEnable", "/t", "REG_DWORD", "/d", "00000000", "/f"]
+            self.command = ["bat", "reg", "add", "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", "/v", "ProxyEnable", "/t", "REG_DWORD", "/d", "00000000", "/f"]
             return self.Bat()
 
         def InstallVB(self):
