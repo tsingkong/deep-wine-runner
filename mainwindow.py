@@ -2402,12 +2402,14 @@ def CheckWine():
                             ])
                     except:
                         traceback.print_exc()
+                    nameValue = [["", ""]] # clear box64/qemu/... items
                     for k in nameValue:
                         print(k)
-                        if "qemu" in k[0]:
-                            chrootProgramPath = "/opt/apps/deepin-wine-runner"
-                        else:
-                            chrootProgramPath = programPath
+                        #if "qemu" in k[0]:
+                        #    chrootProgramPath = "/opt/apps/deepin-wine-runner"
+                        #else:
+                        #    chrootProgramPath = programPath
+                        chrootProgramPath = programPath
                         for j in wine7zUse:
                             if os.path.exists(f"{programPath}/wine/{i}/bin/{j}"):        
                                 wine[f"{k[0]}{chrootProgramPath}/wine/{i}/bin/{j}"] = f"{k[1]}{chrootProgramPath}/wine/{i}/bin/{j}"
