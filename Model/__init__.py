@@ -17,14 +17,16 @@ terminalList = [
     "deepin-terminal",
     "mate-terminal",
     "gnome-terminal",
-    "xfce4-terminal"
+    "xfce4-terminal",
+    "konsole"
 ]
 terminalEnd = {
     f"{programPath}/../launch.sh\" \"deepin-terminal": ["-e", 0],
     "gxde-terminal": ["-e", 0],
     "mate-terminal": ["-e", 1],
     "gnome-terminal": ["--", 0],
-    "xfce4-terminal": ["-e", 1]
+    "xfce4-terminal": ["-e", 1],
+    "konsole": ["-e", 1]
 }
 for i in terminalList:
     if not os.system(f"which {i}"):
